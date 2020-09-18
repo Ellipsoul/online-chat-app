@@ -7,6 +7,6 @@ app = Flask(__name__)
 def get_current_time():
     return {'time': time.time()}
 
-print("Running")
+print("Backend is now running")
 
 # {"time": 1581527730.5866282}
