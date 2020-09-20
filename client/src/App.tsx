@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  console.log("Frontend is now running!")
+  console.log('Frontend is now running!');
 
+  const logo = require("./logo.svg") as string;
   const [currentTime, setCurrentTime] = useState(0);
   useEffect(() => {
-    fetch('/time').then(res => res.json()).then(data => {
+    fetch('/time').then((res) => res.json()).then((data) => {
       setCurrentTime(data.time);
     });
   }, []);
@@ -27,7 +27,7 @@ function App() {
         >
           Learn React
         </a>
-        <p> The current time is {currentTime} </p>
+        <p> The current time is { currentTime } </p>
       </header>
     </div>
   );
