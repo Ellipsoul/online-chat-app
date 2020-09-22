@@ -1,5 +1,5 @@
 import time
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 # Initialise app
 app = Flask(__name__)
@@ -14,6 +14,12 @@ def index():
 @app.route('/time')
 def get_current_time():
     return {'time': time.time()}
+
+@app.route('/api', methods=['GET', 'POST'])
+def get_api():
+    info = request.json
+    print(info)
+    return info
 
 # Is this necessary for backend?
 if __name__ == "__main__":
