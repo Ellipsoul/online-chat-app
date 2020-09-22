@@ -3,7 +3,6 @@ import './App.css';
 
 function App() {
   console.log('Frontend is now running!');
-
   const logo = require("./logo.svg") as string;
 
   // Receiving backend current time from backend
@@ -15,16 +14,25 @@ function App() {
   }, []);
 
   // Send information about input field to backend
-  const [inputField, setInputField] = useState("");
+  const [messageField, setMessageField] = useState("");
   const handleSubmit = () => {
-    fetch("/api", {
+    var d = new Date(Date.now());
+    fetch("/send_message", {
       method:"POST",
-      cache: "no-cache",
       headers: {"content_type":"application/json"},
-      body:JSON.stringify({inputField})
+      body:JSON.stringify(
+        { "message": messageField,
+          "date": d.toString()
+        })
       })
     .then(response => { return response.json()})
   } 
+
+  function show_messages() {
+    fetch("/get_messages")
+    .then((res) => res.json())
+    .then((data) => {console.log(data)})
+  }
 
   return (
     <div className="App">
@@ -46,15 +54,17 @@ function App() {
 
         <form onSubmit={handleSubmit}>
           <label>
-            First Name:
+            Type your message here:
             <input
               type="text"
-              value={inputField}
-              onChange={e => setInputField(e.target.value)}
+              value={messageField}
+              onChange={e => setMessageField(e.target.value)}
             />
             </label>
           <input type="submit" value="Submit" />
         </form>
+
+        <button onClick={show_messages}> Show all messages </button>
 
       </header>
     </div>
