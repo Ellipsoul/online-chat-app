@@ -11,19 +11,10 @@ print("Backend is now running")
 # TODO: Will need to be converted into a databse later
 messages = []
 
-
 # Root directory (likely not needed)
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-# Gets the current time (Not required for chat app)
-class getTime(Resource):
-    def get(self):
-        return {'time':time.time()}
-api.add_resource(getTime, "/time")
-
 
 # POST method to accept HTTP POST request from client, sending a message
 class send_message(Resource):
@@ -44,6 +35,14 @@ class get_messages(Resource):
     def get(self):
         return {"messages": messages}
 api.add_resource(get_messages, "/get_messages")
+
+class clear_messages(Resource):
+	def delete(self):
+		global messages
+		messages = []
+		print("Messages cleared!")
+		return
+api.add_resource(clear_messages, "/clear_messages")
 
 # Is this necessary for backend?
 if __name__ == "__main__":
