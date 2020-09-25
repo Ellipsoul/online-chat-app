@@ -11,14 +11,29 @@
 	row-gap: 10px;
 }
 
-.chat_messages {
+.chat_messages_container {
 	grid-area: chat_messages;
-	background-color: darkblue;
+	border: 2px solid blue;
+	border-radius: 20px;
+
+	display:flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.input_field {
+.chat_messages_div {
+	border: 1px solid gold;
+	height: 90%;
+	width: 95%;
+	overflow:auto;
+}
+
+#input_field_div {
 	grid-area: input_field;
-	background-color: goldenrod;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .submit_button_div {

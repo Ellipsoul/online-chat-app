@@ -1,6 +1,7 @@
-import time
 import json
-from flask import Flask, render_template, request, jsonify
+import time
+
+from flask import Flask, jsonify, render_template, request
 from flask_restful import Api, Resource
 
 # Initialise app

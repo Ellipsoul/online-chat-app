@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from 'react';
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, TextField, Box } from '@material-ui/core';
+import { sizing } from '@material-ui/system';
 import './App.css';
 
 export interface chatProps {
@@ -41,7 +42,7 @@ export default function Chat(props: chatProps) {
 		})
 		.then((res) => res.json())
 		.then((data) => {
-		setCurrentMessages(JSON.stringify(data, null ,4))
+		setCurrentMessages(JSON.stringify(data, undefined, 4))
 		})
 	}
 
@@ -57,12 +58,27 @@ export default function Chat(props: chatProps) {
 			<Container maxWidth="lg">
 				<section className="container">
 
-					<div className="chat_messages">
-						Messages here
+					<div className="chat_messages_container">
+						<div className="chat_messages_div">
+							<button onClick={delete_messages}> Delete all messages </button>
+							<button onClick={show_messages}> Show all messages </button>
+							{ currentMessages }
+						</div>
 					</div>
 
-					<div className="input_field">
-						Input here
+					<div id="input_field_div">
+						<Box width="100%">
+							<TextField
+								label="Say something :)"
+								fullWidth
+								multiline
+								rows={3} // TODO: Find a way to make this dynamic to div height
+								value={messageField}
+								onChange={e => setMessageField(e.target.value)}
+								variant="outlined"
+								color="primary"
+								/>
+						</Box>
 					</div>
 
 					<div className="submit_button_div"> 
@@ -75,23 +91,6 @@ export default function Chat(props: chatProps) {
 							<span id="submit_button_text"> Send </span>
 						</Button>
 					</div>
-					
-					<form onSubmit={handleSubmitMessage}>
-					<label>
-						Type your message here:
-						<input
-						type="text"
-						value={messageField}
-						onChange={e => setMessageField(e.target.value)}
-						/>
-					</label>
-					<input type="submit" value="Send Message" />
-					</form>
-
-					<button onClick={delete_messages}> Delete all messages </button>
-
-					<button onClick={show_messages}> Show all messages </button>
-					<p> { currentMessages } </p>
 				</section>
 			</Container>
 		</>
