@@ -20,22 +20,31 @@ export default function Login():ReactElement {
 
 	return (
 		<>
-			<Container maxWidth="lg" id="login_container">
-				<h1 id="welcome"> Welcome! </h1>
+			<Container maxWidth="lg">
+				<section id="login_container">
 
-				<form onSubmit={handleSubmitName}>
-					<label> 
-						Type your name here:
-						<input 
-						type="text"
-						id="name"
-						value={name}
-						onChange={e => setName(e.target.value)}
-						/>
-					</label>
-					<input type="submit" value="Submit Name" />
-				</form>
-				
+					<h1 id="welcome"> Welcome! </h1>
+
+					<div id="info"> 
+						GitHub and app info 
+					</div>
+
+					<div id="name_login">
+						<form onSubmit={handleSubmitName}>
+							<label> 
+								Type your name here:
+								<input 
+								type="text"
+								id="name"
+								value={name}
+								onChange={e => setName(e.target.value)}
+								/>
+							</label>
+							<input type="submit" value="Submit Name" />
+						</form>
+					</div>
+
+				</section>
 			</Container>
 		</>
 	)

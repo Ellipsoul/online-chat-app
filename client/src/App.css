@@ -1,10 +1,45 @@
 /* Login Page */
+
+/* Main container */
 #login_container {
-	display:grid;
+	display: grid;
 	align-items: center;
 	justify-content: center;
+
+	grid-template-areas: 
+		"welcome"
+		"info"
+		"name_login";
+	grid-template-rows: minmax(100px, 1fr) minmax(200px, 2fr) minmax(300px, 3fr);
 }
 
+/* Large welcome text */
+#welcome {
+	display:block;
+	grid-area: welcome;
+	border: 1px solid gold;
+
+	height: 100%;
+	width: 100%;
+}
+
+/* GitHub and App information */
+#info {
+	grid-area: info;
+	border: 1px solid crimson;
+
+	height: 100%;
+	width: 100%;
+}
+
+/* Login div */
+#name_login {
+	grid-area: name_login;
+	border: 1px solid violet;
+
+	height: 100%;
+	width: 100%;
+}
 
 /* Chat Page */
 
