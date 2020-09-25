@@ -1,10 +1,12 @@
 import React, { useState, SyntheticEvent } from 'react';
+import { Container, Button } from '@material-ui/core';
+import './App.css';
 
 export interface chatProps {
-
 }
 
 export default function Chat(props: chatProps) {
+
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
 	const handleSubmitMessage = (e:SyntheticEvent) => {
@@ -52,22 +54,46 @@ export default function Chat(props: chatProps) {
 
 	return (
 		<>
-			<form onSubmit={handleSubmitMessage}>
-			<label>
-				Type your message here:
-				<input
-				type="text"
-				value={messageField}
-				onChange={e => setMessageField(e.target.value)}
-				/>
-			</label>
-			<input type="submit" value="Send Message" />
-			</form>
+			<Container maxWidth="lg">
+				<section className="container">
 
-			<button onClick={delete_messages}> Delete all messages </button>
+					<div className="chat_messages">
+						Messages here
+					</div>
 
-			<button onClick={show_messages}> Show all messages </button>
-			<p> { currentMessages } </p>
+					<div className="input_field">
+						Input here
+					</div>
+
+					<div className="submit_button_div"> 
+						<Button 
+							variant="contained" 
+							color="primary" 
+							className="submit_button"
+							onClick={handleSubmitMessage}
+						> 
+							<span id="submit_button_text"> Send </span>
+						</Button>
+					</div>
+					
+					<form onSubmit={handleSubmitMessage}>
+					<label>
+						Type your message here:
+						<input
+						type="text"
+						value={messageField}
+						onChange={e => setMessageField(e.target.value)}
+						/>
+					</label>
+					<input type="submit" value="Send Message" />
+					</form>
+
+					<button onClick={delete_messages}> Delete all messages </button>
+
+					<button onClick={show_messages}> Show all messages </button>
+					<p> { currentMessages } </p>
+				</section>
+			</Container>
 		</>
 	)
 }

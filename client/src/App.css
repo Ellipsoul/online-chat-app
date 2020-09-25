@@ -1,0 +1,48 @@
+.container {
+	/* min-height: 98vh; */
+	height: 98vh;
+	display: grid;
+	grid-template-areas: 
+		"chat_messages chat_messages"
+		"input_field submit_button";
+	grid-template-rows: minmax(200px, 6fr) minmax(100px, 1fr);
+	grid-template-columns: minmax(200px, 6fr) minmax(100px, 1fr);
+	column-gap: 10px;
+	row-gap: 10px;
+}
+
+.chat_messages {
+	grid-area: chat_messages;
+	background-color: darkblue;
+}
+
+.input_field {
+	grid-area: input_field;
+	background-color: goldenrod;
+}
+
+.submit_button_div {
+	grid-area: submit_button;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.submit_button {
+	height: 90%;
+	width: 90%;
+}
+
+#submit_button_text {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 30px;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	color: white;
+	font-weight: normal;
+	text-decoration: none;
+	font-style: normal;
+	font-variant: normal;
+	text-transform: none;
+}
