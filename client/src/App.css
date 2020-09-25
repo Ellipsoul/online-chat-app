@@ -1,5 +1,15 @@
-.container {
-	/* min-height: 98vh; */
+/* Login Page */
+#login_container {
+	display:grid;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* Chat Page */
+
+/* Main container */
+.chat_container {
 	height: 98vh;
 	display: grid;
 	grid-template-areas: 
@@ -11,6 +21,7 @@
 	row-gap: 10px;
 }
 
+/* Chat messages container */
 .chat_messages_container {
 	grid-area: chat_messages;
 	border: 2px solid blue;
@@ -21,6 +32,7 @@
 	justify-content: center;
 }
 
+/* Inner messages display div */
 .chat_messages_div {
 	border: 1px solid gold;
 	height: 90%;
@@ -28,6 +40,7 @@
 	overflow:auto;
 }
 
+/* Message input field */
 #input_field_div {
 	grid-area: input_field;
 
@@ -36,6 +49,7 @@
 	justify-content: center;
 }
 
+/* Send message div */
 .submit_button_div {
 	grid-area: submit_button;
 
@@ -44,11 +58,13 @@
 	justify-content: center;
 }
 
+/* Send message button */
 .submit_button {
 	height: 90%;
 	width: 90%;
 }
 
+/* Button text styling */
 #submit_button_text {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size: 30px;

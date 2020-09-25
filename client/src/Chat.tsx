@@ -1,6 +1,5 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { Container, Button, TextField, Box } from '@material-ui/core';
-import { sizing } from '@material-ui/system';
 import './App.css';
 
 export interface chatProps {
@@ -12,6 +11,7 @@ export default function Chat(props: chatProps) {
 	const [messageField, setMessageField] = useState("");
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
+		// Send the message
 		if (messageField.length !== 0) {
 			var d = new Date(Date.now());
 			fetch("/send_message", {
@@ -28,6 +28,7 @@ export default function Chat(props: chatProps) {
 			console.log("Message sent!")
 			return false
 			}
+		// Flag down empty messages
 		else {
 			console.log("Please send a non-empty message")
 		}
@@ -46,6 +47,7 @@ export default function Chat(props: chatProps) {
 		})
 	}
 
+	// Delete all messages (probabbly will be a DEV thing)
 	function delete_messages() {
 		fetch("/clear_messages", {
 			method:"DELETE",
@@ -55,9 +57,11 @@ export default function Chat(props: chatProps) {
 
 	return (
 		<>
+			{/* Main container and section */}
 			<Container maxWidth="lg">
-				<section className="container">
+				<section className="chat_container">
 
+					{/* Div for displaying chat messages */}
 					<div className="chat_messages_container">
 						<div className="chat_messages_div">
 							<button onClick={delete_messages}> Delete all messages </button>
@@ -66,6 +70,7 @@ export default function Chat(props: chatProps) {
 						</div>
 					</div>
 
+					{/* Div for chat message input field */}
 					<div id="input_field_div">
 						<Box width="100%">
 							<TextField
@@ -81,6 +86,7 @@ export default function Chat(props: chatProps) {
 						</Box>
 					</div>
 
+					{/* Submit button div */}
 					<div className="submit_button_div"> 
 						<Button 
 							variant="contained" 
@@ -91,6 +97,7 @@ export default function Chat(props: chatProps) {
 							<span id="submit_button_text"> Send </span>
 						</Button>
 					</div>
+
 				</section>
 			</Container>
 		</>

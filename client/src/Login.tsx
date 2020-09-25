@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
 import React, {useState, SyntheticEvent, ReactElement} from 'react';
-import { Redirect, useHistory, Switch, Route, Link } from 'react-router-dom';
-import Chat from './Chat';
+import { Container, Button, TextField, Box } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
+import './App.css';
 
 export default function Login():ReactElement {
 
@@ -20,18 +20,23 @@ export default function Login():ReactElement {
 
 	return (
 		<>
-			<form onSubmit={handleSubmitName}>
-				<label> 
-					Type your name here:
-					<input 
-					type="text"
-					id="name"
-					value={name}
-					onChange={e => setName(e.target.value)}
-					/>
-				</label>
-				<input type="submit" value="Submit Name" />
-			</form>
+			<Container maxWidth="lg" id="login_container">
+				<h1 id="welcome"> Welcome! </h1>
+
+				<form onSubmit={handleSubmitName}>
+					<label> 
+						Type your name here:
+						<input 
+						type="text"
+						id="name"
+						value={name}
+						onChange={e => setName(e.target.value)}
+						/>
+					</label>
+					<input type="submit" value="Submit Name" />
+				</form>
+				
+			</Container>
 		</>
 	)
 }
