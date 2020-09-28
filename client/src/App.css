@@ -1,5 +1,10 @@
 /* Login Page */
 
+.large_container {
+	background-color: cornsilk;
+	border-radius: 50px;
+}
+
 /* Main container */
 #login_container {
 	display: grid;
@@ -9,18 +14,39 @@
 	grid-template-areas: 
 		"welcome"
 		"info"
+		"logos"
 		"name_login";
-	grid-template-rows: minmax(100px, 1fr) minmax(200px, 2fr) minmax(300px, 3fr);
+	grid-template-rows: minmax(50px, 1fr) minmax(50px, 1fr) auto minmax(150px, 2fr);
+	row-gap: 2vh;
+	height: 97vh;
+	background-color: unset;
+
+	border: 2px solid purple;
 }
 
 /* Large welcome text */
 #welcome {
-	display:block;
+    display: flex;
+	vertical-align: middle;
 	grid-area: welcome;
 	border: 1px solid gold;
+	align-items: center;
+    justify-content: center;
+	background-color: unset;
 
 	height: 100%;
 	width: 100%;
+
+	font-family: "Palatino", Geneva, sans-serif;
+	font-size: calc(4vw + 4vh);
+	letter-spacing: 0px;
+	word-spacing: 2px;
+	color: #000000;
+	font-weight: 700;
+	text-decoration: none;
+	font-style: normal;
+	font-variant: normal;
+	text-transform: none;
 }
 
 /* GitHub and App information */
@@ -28,18 +54,99 @@
 	grid-area: info;
 	border: 1px solid crimson;
 
+	display: block;
+	height: 100%;
+	width: 65%;
+	margin: auto;
+	background-color: unset;
+
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: calc(1.5vh + 1.5vw);
+	line-height: calc(1.7vh + 1.7vw);
+	letter-spacing: 0px;
+	word-spacing: 2px;
+	color: #000000;
+	font-weight: 400;
+	text-decoration: none;
+	font-style: normal;
+	font-variant: normal;
+	text-transform: none;
+}
+
+/* Tech Logos and Links */
+#logos {
+	grid-area: logos;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+
+	width: 65%;
+	height: 100%;
+	margin: auto;
+
+	align-items: center;
+	justify-content: center;
+
+	border: 2px solid salmon;
+}
+
+#logos > div {
+	display: block;
 	height: 100%;
 	width: 100%;
+	margin: auto;
+}
+
+.github_logo {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+.react_logo {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+.typescript_logo {
+	display: block;
+	margin: auto;
+	width: 80%;
 }
 
 /* Login div */
 #name_login {
 	grid-area: name_login;
-	border: 1px solid violet;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
 
 	height: 100%;
-	width: 100%;
+	width: 65%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: 1px solid violet;
 }
+
+.name_input {
+	border: 2px solid green;
+}
+
+.name_submit {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	border: 2px solid lightgreen;
+}
+
+.name_button {
+	display: block;
+	height: 95%;
+	width: 95%;
+}
+
+/* -------------------------------------------------------------------------------------------------------------- */
 
 /* Chat Page */
 
