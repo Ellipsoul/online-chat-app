@@ -1,6 +1,6 @@
 /* Login Page */
 
-.large_container {
+.large_login_container {
 	background-color: cornsilk;
 	border-radius: 50px;
 }
@@ -17,11 +17,8 @@
 		"logos"
 		"name_login";
 	grid-template-rows: minmax(50px, 1fr) minmax(50px, 1fr) auto minmax(150px, 2fr);
-	row-gap: 2vh;
+	row-gap: 1vh;
 	height: 97vh;
-	background-color: unset;
-
-	border: 2px solid purple;
 }
 
 /* Large welcome text */
@@ -29,7 +26,6 @@
     display: flex;
 	vertical-align: middle;
 	grid-area: welcome;
-	border: 1px solid gold;
 	align-items: center;
     justify-content: center;
 	background-color: unset;
@@ -52,7 +48,6 @@
 /* GitHub and App information */
 #info {
 	grid-area: info;
-	border: 1px solid crimson;
 
 	display: block;
 	height: 100%;
@@ -85,8 +80,6 @@
 
 	align-items: center;
 	justify-content: center;
-
-	border: 2px solid salmon;
 }
 
 #logos > div {
@@ -118,37 +111,39 @@
 #name_login {
 	grid-area: name_login;
 	display: grid;
-	grid-template-rows: 1fr 1fr;
+	grid-template-rows: auto minmax(50px, 1fr) 1fr;
+	row-gap: 1vh;
 
 	height: 100%;
 	width: 65%;
 	margin-left: auto;
 	margin-right: auto;
-
-	border: 1px solid violet;
 }
 
 .name_input {
-	border: 2px solid green;
+	border: 0px solid green;
 }
 
-.name_submit {
+.name_submit_div {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
-	border: 2px solid lightgreen;
 }
 
 .name_button {
 	display: block;
-	height: 95%;
-	width: 95%;
+	height: 100%;
+	width: 100%;
 }
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
 /* Chat Page */
+
+.large_chat_container {
+	display: flex;
+}
 
 /* Main container */
 .chat_container {
@@ -166,8 +161,8 @@
 /* Chat messages container */
 .chat_messages_container {
 	grid-area: chat_messages;
-	border: 2px solid blue;
-	border-radius: 20px;
+	background-color: rgba(135, 206, 250, 0.3);
+	border-radius: calc(3 * 1vh + 3 * 1vw);
 
 	display:flex;
 	align-items: center;
@@ -176,7 +171,6 @@
 
 /* Inner messages display div */
 .chat_messages_div {
-	border: 1px solid gold;
 	height: 90%;
 	width: 95%;
 	overflow:auto;
@@ -189,6 +183,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	border-radius: calc(2 * 1vh + 2 * 1vw);
 }
 
 /* Send message div */

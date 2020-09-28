@@ -25,12 +25,20 @@ export default function Chat(props: chatProps) {
 				})
 			})
 			.then(response => { return response.json()})
+			setMessageField("")
 			console.log("Message sent!")
 			return false
 			}
 		// Flag down empty messages
 		else {
 			console.log("Please send a non-empty message")
+		}
+	}
+
+	// Enter key functionality for sending messages
+	const checkEnterPressed = (e:any) => {
+		if (e.key == "Enter") {
+			handleSubmitMessage(e)
 		}
 	}
 
@@ -55,10 +63,13 @@ export default function Chat(props: chatProps) {
 		})
 	}
 
+	const height:number = window.innerHeight;
+	const numrows:number = Math.floor(height/200);
+
 	return (
 		<>
 			{/* Main container and section */}
-			<Container maxWidth="lg">
+			<Container maxWidth="lg" className="large_chat_container" disableGutters={true}>
 				<section className="chat_container">
 
 					{/* Div for displaying chat messages */}
@@ -77,12 +88,13 @@ export default function Chat(props: chatProps) {
 								label="Say something :)"
 								fullWidth
 								multiline
-								rows={3} // TODO: Find a way to make this dynamic to div height
+								rows={numrows}
 								value={messageField}
 								onChange={e => setMessageField(e.target.value)}
 								variant="outlined"
 								color="primary"
-								/>
+								onKeyDown={ checkEnterPressed }
+							/>
 						</Box>
 					</div>
 
