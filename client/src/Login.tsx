@@ -1,6 +1,6 @@
-import React, {useState, SyntheticEvent, ReactElement} from 'react';
+import React, { useState, SyntheticEvent, ReactElement, createContext } from 'react';
 import { Container } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { TextField, Button } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -12,11 +12,14 @@ export default function Login():ReactElement {
 
 	if (shouldRedirect) {
 		// Redirect to main chat after name submit
-		return (	
-			<Redirect to={{ pathname:shouldRedirect, 
-							state:{name:name} }} />
-		)  
-	} 
+		return (
+			<Redirect to={{ 
+				pathname:shouldRedirect, 
+				state: { name: name }
+			}} />
+		)
+	}
+
 	const handleSubmitName = (e:SyntheticEvent) => {
 		return redirectTo('/chat')
 	}

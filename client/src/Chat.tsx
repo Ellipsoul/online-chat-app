@@ -1,12 +1,22 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { Container, Button, TextField, Box } from '@material-ui/core';
 import './App.css';
+import { useLocation } from "react-router-dom";
 
 export interface chatProps {
 }
 
-export default function Chat(props: chatProps) {
+export interface locationProps {
+	pathname: string;
+	search: string;
+	hash: string;
+	key: string;
+	state: {name: string};
+}
 
+export default function Chat(props: chatProps) {
+	// Retrieve props passed from login
+	const location = useLocation() as locationProps;
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
 	const handleSubmitMessage = (e:SyntheticEvent) => {
@@ -19,7 +29,7 @@ export default function Chat(props: chatProps) {
 			headers: {"content_type":"application/json"},
 			body:JSON.stringify(
 				{ 
-				// "name": name,
+				"name": location.state.name,
 				"date": d.toString(),
 				"message": messageField,
 				})
@@ -72,20 +82,22 @@ export default function Chat(props: chatProps) {
 			<Container maxWidth="lg" className="large_chat_container" disableGutters={true}>
 				<section className="chat_container">
 
-					{/* Div for displaying chat messages */}
+					{/* Div for displaying and deleting chat messages */}
 					<div className="chat_messages_container">
-						<div className="chat_messages_div">
-							<button onClick={delete_messages}> Delete all messages </button>
-							<button onClick={show_messages}> Show all messages </button>
-							{ currentMessages }
-						</div>
+
+					<div className="chat_messages_div">
+						<button onClick={delete_messages}> Delete all messages </button>
+						<button onClick={show_messages}> Show all messages </button>
+						{ currentMessages }
+					</div>
+
 					</div>
 
 					{/* Div for chat message input field */}
 					<div id="input_field_div">
 						<Box width="100%">
 							<TextField
-								label="Say something :)"
+								label={`Say something, ${location.state.name} :)`}
 								fullWidth
 								multiline
 								rows={numrows}

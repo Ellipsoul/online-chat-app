@@ -11,6 +11,7 @@ print("Backend is now running")
 
 # TODO: Will need to be converted into a databse later
 messages = []
+users = []
 
 # Root directory (likely not needed)
 @app.route('/')

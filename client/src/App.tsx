@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Login from './Login'
 import Chat from './Chat'
 
 function App():ReactElement {
-	console.log('Frontend is now running!');
+	console.log('Frontend is now running!');	
 
 	return (
 		<>
