@@ -24,19 +24,20 @@ class send_message(Resource):
         message_data = request.json     # Retrieve message JSON data from client
         messages.append(message_data)   # Append message to all messages
 
-        message_formatted = json.dumps(message_data, indent=2)
-        messages_formatted = json.dumps(messages, indent=2)
-        print(f"\nLast message sent:\n {message_formatted} \n")
-        print(f"All messages so far:\n {messages_formatted}")
+		# Logging messages to the console
+        # message_formatted = json.dumps(message_data, indent=2)
+        # messages_formatted = json.dumps(messages, indent=2)
+        # print(f"\nLast message sent:\n {message_formatted} \n")
+        # print(f"All messages so far:\n {messages_formatted}")
 
         return
 api.add_resource(send_message, "/send_message")
 
 
-class get_messages(Resource):
+class get_all_messages(Resource):
     def get(self):
         return {"messages": messages}
-api.add_resource(get_messages, "/get_messages")
+api.add_resource(get_all_messages, "/get_all_messages")
 
 class clear_messages(Resource):
 	def delete(self):

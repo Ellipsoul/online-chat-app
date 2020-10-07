@@ -1,10 +1,10 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { Container, Button, TextField, Box } from '@material-ui/core';
+import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
+import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
+import Message from "./Message";
 
-export interface chatProps {
-}
+export interface chatProps {}
 
 export interface locationProps {
 	pathname: string;
@@ -12,6 +12,12 @@ export interface locationProps {
 	hash: string;
 	key: string;
 	state: {name: string};
+}
+
+export interface MessageStructure {
+	name: string;
+	date: Date;
+	message: string;
 }
 
 export default function Chat(props: chatProps) {
@@ -22,7 +28,7 @@ export default function Chat(props: chatProps) {
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
 		// Send the message
-		if (messageField.length !== 0) {
+		if (messageField.length !== 0 && messageField.length < 1000) {
 			var d = new Date(Date.now());
 			fetch("/send_message", {
 			method:"POST",
@@ -41,7 +47,7 @@ export default function Chat(props: chatProps) {
 			}
 		// Flag down empty messages
 		else {
-			console.log("Please send a non-empty message")
+			setOpen(true);
 		}
 	}
 
@@ -52,20 +58,35 @@ export default function Chat(props: chatProps) {
 		}
 	}
 
+	// Retrieve all messages when page is loaded
+	useEffect(()=> {
+		retrieve_all_messages();
+	}, [])
+
 	// Retrieve all current messages from the server
-	const [currentMessages, setCurrentMessages] = useState("");
-	function show_messages() {
-		fetch("/get_messages", {
+	const [currentMessages, setCurrentMessages] = useState(null);
+	function retrieve_all_messages() {
+		fetch("/get_all_messages", {
 			method:"GET",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
 		.then((data) => {
-		setCurrentMessages(JSON.stringify(data, undefined, 4))
+			console.log(data.messages);
+			setCurrentMessages(data.messages.map((message_info:MessageStructure) => {
+				// Generate a message component for every message
+				return (
+					<Message
+						name={message_info.name}
+						date={message_info.date}
+						message={message_info.message}
+					/>
+				)
+			}));
 		})
 	}
 
-	// Delete all messages (probabbly will be a DEV thing)
+	// Delete all messages (Developer functionality only)
 	function delete_messages() {
 		fetch("/clear_messages", {
 			method:"DELETE",
@@ -73,8 +94,22 @@ export default function Chat(props: chatProps) {
 		})
 	}
 
+	// Determine number of rows for the chat input box
 	const height:number = window.innerHeight;
 	const numrows:number = Math.floor(height/200);
+
+	// Handle automatic scrolling down (Later)
+	const messagesEndRef:any = useRef(null);
+	const scrollToBottom = () => {
+		messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+	};
+	useEffect(scrollToBottom, [currentMessages]);
+
+	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
+	// Snackbar close handling
+	const closeSnackBar = () => {
+		setOpen(false);
+	}
 
 	return (
 		<>
@@ -85,10 +120,12 @@ export default function Chat(props: chatProps) {
 					{/* Div for displaying and deleting chat messages */}
 					<div className="chat_messages_container">
 
+					{/* Div showing all chat messages */}
 					<div className="chat_messages_div">
-						<button onClick={delete_messages}> Delete all messages </button>
-						<button onClick={show_messages}> Show all messages </button>
+						{/* <button onClick={delete_messages}> Delete all messages </button>
+						<button onClick={retrieve_all_messages}> Show all messages </button> */}
 						{ currentMessages }
+						<div ref={messagesEndRef} />
 					</div>
 
 					</div>
@@ -105,10 +142,22 @@ export default function Chat(props: chatProps) {
 								onChange={e => setMessageField(e.target.value)}
 								variant="outlined"
 								color="primary"
-								onKeyDown={ checkEnterPressed }
+								onKeyDown={checkEnterPressed}
 							/>
 						</Box>
 					</div>
+
+					<Snackbar
+						color="secondary"
+						anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'center',
+						}}
+						open={openSnackBar}
+						onClose={closeSnackBar}
+						autoHideDuration={3000}
+						message="Your message is either empty or too long!"
+					/>
 
 					{/* Submit button div */}
 					<div className="submit_button_div"> 

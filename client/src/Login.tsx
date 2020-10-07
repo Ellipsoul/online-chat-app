@@ -1,14 +1,16 @@
 import React, { useState, SyntheticEvent, ReactElement, createContext } from 'react';
 import { Container } from '@material-ui/core';
-import { Redirect, Switch, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import './App.css';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Snackbar } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Login():ReactElement {
 
-	const [name, setName] = useState("");       // Tracks user name state
-	const [shouldRedirect, redirectTo] = useState('');   // Tracks redirect location state
+	const [name, setName] = useState("");  			    	 // Tracks user name state
+	const [shouldRedirect, redirectTo] = useState('');  	 // Tracks redirect location state
+	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
+	const [alertMessage, setAlertMessage] = useState(""); 	// Tracks alert message
 
 	if (shouldRedirect) {
 		// Redirect to main chat after name submit
@@ -21,7 +23,16 @@ export default function Login():ReactElement {
 	}
 
 	const handleSubmitName = (e:SyntheticEvent) => {
-		return redirectTo('/chat')
+		if (!name.length) {
+			setAlertMessage("Please enter a non-empty name")
+			setOpen(true);
+		}
+		else if (name.length > 20) {
+			setAlertMessage("Please enter a shorter name!")
+			setOpen(true);
+		} else {
+			return redirectTo('/chat');
+		}
 	}
 
 	const height:number = window.innerHeight;
@@ -38,6 +49,17 @@ export default function Login():ReactElement {
 		}
 	})
 	
+	// Enter key functionality for submitting name
+	const checkEnterPressed = (e:any) => {
+		if (e.key == "Enter") {
+			handleSubmitName(e)
+		}
+	}
+
+	// Snackbar close handling
+	const closeSnackBar = () => {
+		setOpen(false);
+	}
 
 	return (
 		<>
@@ -89,6 +111,7 @@ export default function Login():ReactElement {
 									variant="outlined"
 									color="primary"
 									placeholder="Enter name"
+									onKeyDown={checkEnterPressed}
 								/>
 							</ThemeProvider>
 						</div>
@@ -105,6 +128,18 @@ export default function Login():ReactElement {
 								</Button> 
 							</ThemeProvider>
 						</div>
+
+						<Snackbar
+							color="secondary"
+							anchorOrigin={{
+							vertical: 'bottom',
+							horizontal: 'center',
+							}}
+							open={openSnackBar}
+							onClose={closeSnackBar}
+							autoHideDuration={3000}
+							message={alertMessage}
+						/>
 
 					</div>
 
