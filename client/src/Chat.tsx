@@ -14,11 +14,11 @@ export interface locationProps {
 	state: {name: string};
 }
 
-export interface MessageStructure {
-	name: string;
-	date: Date;
-	message: string;
-}
+// export interface MessageStructure {
+// 	name: string;
+// 	date: Date;
+// 	message: string;
+// }
 
 export default function Chat(props: chatProps) {
 	// Retrieve props passed from login
@@ -72,7 +72,6 @@ export default function Chat(props: chatProps) {
 		})
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data.messages);
 			setCurrentMessages(data.messages.map((message_info:string[]) => {
 				// Generate a message component for every message
 				return (
