@@ -64,12 +64,12 @@ class get_new_messages(Resource):
         time = request.args.get('time')
         conn = sqlite3.connect('messages.db')
         c = conn.cursor()
-        c.execute(f"SELECT * FROM messages WHERE date_unix < {time}")
+        c.execute(f"SELECT * FROM messages WHERE date_unix > {time}")
         new_messages = c.fetchall()
         conn.commit()
         conn.close()
         print(new_messages)
-        # return {}
+        return {"new_messages": new_messages}
 api.add_resource(get_new_messages, "/get_new_messages")
 
 class clear_messages(Resource):

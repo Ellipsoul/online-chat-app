@@ -65,7 +65,7 @@ export default function Chat(props: chatProps) {
 	}, [])
 
 	// Retrieve all current messages from the server
-	const [rawMessages, setRawMessages] = useState([]);
+	const [rawMessages, setRawMessages] = useState([["", "", "", ""]]);
 	const [currentMessages, setCurrentMessages] = useState(null);
 	function retrieve_all_messages() {
 		fetch("/get_all_messages", {
@@ -75,7 +75,6 @@ export default function Chat(props: chatProps) {
 		.then((res) => res.json())
 		.then((data) => {
 			setRawMessages(data.all_messages);
-			console.log(rawMessages);
 			setCurrentMessages(data.all_messages.map((message_info:string[]) => {
 				// Generate a message component for every message
 				return (
@@ -97,8 +96,16 @@ export default function Chat(props: chatProps) {
 			method: "GET",
 			headers: {"content_type":"application/json"}
 		})
-		.then((res) => {res.json()})
-		.then((data => {return null}))
+		.then((res) => res.json())
+		.then((data => {
+			console.log("New messages are:")
+			console.log(data.new_messages)
+			console.log("All (raw) messages are:")
+			console.log(rawMessages)
+			if (data.new_messages.length) {
+				setRawMessages(rawMessages => [...rawMessages, data.new_messages])
+			}
+		}))
 	}
 
 	// Delete all messages (Developer functionality only)
