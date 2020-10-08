@@ -4,7 +4,7 @@ import { isMobile } from "react-device-detect";
 
 export interface messageProps {
 	name: string;
-	date: Date;
+	date: string;
 	message: string;
 }
 

@@ -73,13 +73,13 @@ export default function Chat(props: chatProps) {
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data.messages);
-			setCurrentMessages(data.messages.map((message_info:MessageStructure) => {
+			setCurrentMessages(data.messages.map((message_info:string[]) => {
 				// Generate a message component for every message
 				return (
 					<Message
-						name={message_info.name}
-						date={message_info.date}
-						message={message_info.message}
+						name={message_info[0]}
+						date={message_info[1]}
+						message={message_info[2]}
 					/>
 				)
 			}));
@@ -122,8 +122,8 @@ export default function Chat(props: chatProps) {
 
 					{/* Div showing all chat messages */}
 					<div className="chat_messages_div">
-						{/* <button onClick={delete_messages}> Delete all messages </button>
-						<button onClick={retrieve_all_messages}> Show all messages </button> */}
+						{/* <button onClick={delete_messages}> Delete all messages </button> */}
+						<button onClick={retrieve_all_messages}> Show all messages </button>
 						{ currentMessages }
 						<div ref={messagesEndRef} />
 					</div>

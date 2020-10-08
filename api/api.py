@@ -68,7 +68,7 @@ class get_all_messages(Resource):
         print(all_messages)
         conn.commit()
         conn.close()
-        return {"messages": messages}
+        return {"messages": all_messages}
 api.add_resource(get_all_messages, "/get_all_messages")
 
 class clear_messages(Resource):
