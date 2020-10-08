@@ -14,9 +14,9 @@ c = conn.cursor()
 c.execute("""CREATE TABLE IF NOT EXISTS messages (
             name text,
             date text,
-            message text
+            message text,
+            date_unix text
             )""")
-# c.execute("""DELETE FROM messages""")
 conn.commit()
 conn.close()
 print("Backend is now running")
@@ -36,9 +36,9 @@ class send_message(Resource):
         c = conn.cursor()
         # Set up message insertion and execute
         sqlite_insert = """ INSERT INTO messages 
-                        (name, date, message)
-                        VALUES (?, ?, ?); """
-        data_tuple = (message_data['name'], message_data['date'], message_data['message'])
+                        (name, date, message, date_unix)
+                        VALUES (?, ?, ?, ?); """
+        data_tuple = (message_data['name'], message_data['date'], message_data['message'], message_data['date_unix'])
         c.execute(sqlite_insert, data_tuple)
         conn.commit()
         conn.close()
@@ -55,14 +55,30 @@ class get_all_messages(Resource):
         all_messages = c.fetchall()
         conn.commit()
         conn.close()
-        return {"messages": all_messages}
+        return {"all_messages": all_messages}
 api.add_resource(get_all_messages, "/get_all_messages")
 
 
+class get_new_messages(Resource):
+    def get(self):
+        time = request.args.get('time')
+        conn = sqlite3.connect('messages.db')
+        c = conn.cursor()
+        c.execute(f"SELECT * FROM messages WHERE date_unix < {time}")
+        new_messages = c.fetchall()
+        conn.commit()
+        conn.close()
+        print(new_messages)
+        # return {}
+api.add_resource(get_new_messages, "/get_new_messages")
+
 class clear_messages(Resource):
     def delete(self):
-        global messages
-        messages = []
+        conn = sqlite3.connect('messages.db')
+        c = conn.cursor()
+        c.execute("""DELETE FROM messages""")
+        conn.commit()
+        conn.close()
         print("Messages cleared!")
         return
 api.add_resource(clear_messages, "/clear_messages")

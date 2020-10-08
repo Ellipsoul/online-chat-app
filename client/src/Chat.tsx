@@ -38,6 +38,7 @@ export default function Chat(props: chatProps) {
 				"name": location.state.name,
 				"date": d.toString(),
 				"message": messageField,
+				"date_unix": d.getTime()
 				})
 			})
 			.then(response => { return response.json()})
@@ -64,15 +65,18 @@ export default function Chat(props: chatProps) {
 	}, [])
 
 	// Retrieve all current messages from the server
+	const [rawMessages, setRawMessages] = useState([]);
 	const [currentMessages, setCurrentMessages] = useState(null);
 	function retrieve_all_messages() {
 		fetch("/get_all_messages", {
-			method:"GET",
+			method: "GET",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
 		.then((data) => {
-			setCurrentMessages(data.messages.map((message_info:string[]) => {
+			setRawMessages(data.all_messages);
+			console.log(rawMessages);
+			setCurrentMessages(data.all_messages.map((message_info:string[]) => {
 				// Generate a message component for every message
 				return (
 					<Message
@@ -83,6 +87,18 @@ export default function Chat(props: chatProps) {
 				)
 			}));
 		})
+	}
+
+	function retrieve_new_messages() {
+		let last_message_unix = rawMessages[rawMessages.length-1][3]
+		const queryString = `/get_new_messages?time=${last_message_unix}`;
+		console.log(queryString)
+		fetch(queryString, {
+			method: "GET",
+			headers: {"content_type":"application/json"}
+		})
+		.then((res) => {res.json()})
+		.then((data => {return null}))
 	}
 
 	// Delete all messages (Developer functionality only)
@@ -121,8 +137,9 @@ export default function Chat(props: chatProps) {
 
 					{/* Div showing all chat messages */}
 					<div className="chat_messages_div">
-						{/* <button onClick={delete_messages}> Delete all messages </button> */}
+						<button onClick={delete_messages}> Delete all messages </button>
 						<button onClick={retrieve_all_messages}> Show all messages </button>
+						<button onClick={retrieve_new_messages}> Show new messages </button>
 						{ currentMessages }
 						<div ref={messagesEndRef} />
 					</div>

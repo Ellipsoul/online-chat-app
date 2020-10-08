@@ -10,7 +10,7 @@ export interface messageProps {
 
 export default function Message(props: messageProps) {
 	
-	const date_moment = !isMobile ? moment(props.date).format('HH:MM:SS  D MMMM YYYY') : moment(props.date).format('HH:MM  D/M');
+	var date_moment = !isMobile ? moment(props.date).format('D MMMM YYYY  HH:mm:ss') : moment(props.date).format('D/M  HH:mm');
 
 	return (
 		<>
