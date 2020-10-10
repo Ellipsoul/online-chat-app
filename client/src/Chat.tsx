@@ -21,6 +21,7 @@ export default function Chat(props: chatProps) {
 
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
+	const [latestMessageTime, setLatestMessageTime] = useState(0);
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
@@ -52,6 +53,7 @@ export default function Chat(props: chatProps) {
 					message={message}
 				/>
 			setCurrentMessages(currentMessages => [...currentMessages, sent_message])
+			setLatestMessageTime(date_unix)
 			return false
 			}
 		// Flag down empty messages
@@ -106,8 +108,8 @@ export default function Chat(props: chatProps) {
 			retrieve_all_messages();
 			return null
 		}
-		// Retrieve unix timestamp of last message user has
-		let last_message_unix = rawMessages[rawMessages.length-1][3]
+		// Retrieve unix timestamp of last message user has (latest between user sent and others sent)
+		let last_message_unix = (parseInt(rawMessages[rawMessages.length-1][3]) > latestMessageTime) ? rawMessages[rawMessages.length-1][3] : latestMessageTime.toString()
 		const queryString = `/get_new_messages?time=${last_message_unix}`;
 		console.log(queryString)
 		// Request new messages with query
