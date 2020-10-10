@@ -2,7 +2,7 @@ import React, { useState, SyntheticEvent, useEffect, useRef, ReactElement } from
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
-import Message, { messageProps } from "./Message";
+import Message from "./Message";
 
 export interface chatProps {}
 
@@ -14,12 +14,6 @@ export interface locationProps {
 	key: string;
 	state: {name: string};
 }
-
-// export interface MessageStructure {
-// 	name: string;
-// 	date: Date;
-// 	message: string;
-// }
 
 export default function Chat(props: chatProps) {
 	// Retrieve props passed from login

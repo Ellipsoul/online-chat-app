@@ -7,8 +7,8 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Login():ReactElement {
 
-	const [name, setName] = useState("");  			    	 // Tracks user name state
-	const [shouldRedirect, redirectTo] = useState('');  	 // Tracks redirect location state
+	const [name, setName] = useState("");  			    	// Tracks user name state
+	const [shouldRedirect, redirectTo] = useState('');  	// Tracks redirect location state
 	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
 	const [alertMessage, setAlertMessage] = useState(""); 	// Tracks alert message
 
