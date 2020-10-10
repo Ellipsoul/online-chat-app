@@ -1,11 +1,12 @@
-import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
+import React, { useState, SyntheticEvent, useEffect, useRef, ReactElement } from 'react';
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
-import Message from "./Message";
+import Message, { messageProps } from "./Message";
 
 export interface chatProps {}
 
+// Defining location type to access name
 export interface locationProps {
 	pathname: string;
 	search: string;
@@ -23,27 +24,40 @@ export interface locationProps {
 export default function Chat(props: chatProps) {
 	// Retrieve props passed from login
 	const location = useLocation() as locationProps;
+
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
+
+		const name = location.state.name;
+		const date = new Date(Date.now());
+		const message = messageField;
+		const date_unix = date.getTime();
+
 		// Send the message
 		if (messageField.length !== 0 && messageField.length < 1000) {
-			var d = new Date(Date.now());
 			fetch("/send_message", {
 			method:"POST",
 			headers: {"content_type":"application/json"},
 			body:JSON.stringify(
 				{ 
-				"name": location.state.name,
-				"date": d.toString(),
-				"message": messageField,
-				"date_unix": d.getTime()
+				"name": name,
+				"date": date.toString(),
+				"message": message,
+				"date_unix": date_unix  // Last column is unix timestamp
 				})
 			})
 			.then(response => { return response.json()})
-			setMessageField("")
+			setMessageField("")  // Empty the message container
 			console.log("Message sent!")
+			const sent_message:any = 
+				<Message
+					name={name}
+					date={date.toString()}
+					message={message}
+				/>
+			setCurrentMessages(currentMessages => [...currentMessages, sent_message])
 			return false
 			}
 		// Flag down empty messages
@@ -51,6 +65,9 @@ export default function Chat(props: chatProps) {
 			setOpen(true);
 		}
 	}
+
+	// Concatenate 
+
 
 	// Enter key functionality for sending messages
 	const checkEnterPressed = (e:any) => {
@@ -64,9 +81,11 @@ export default function Chat(props: chatProps) {
 		retrieve_all_messages();
 	}, [])
 
+	const [newMessages, setNewMessages] = useState<string[][]>([[]])       // New messages in JSON format
+	const [rawMessages, setRawMessages] = useState<string[][]>([[]]); 	   // All messages in JSON format
+	const [currentMessages, setCurrentMessages] = useState<string[][]>([[]]);  // All messages in JSX
+
 	// Retrieve all current messages from the server
-	const [rawMessages, setRawMessages] = useState([["", "", "", ""]]);
-	const [currentMessages, setCurrentMessages] = useState(null);
 	function retrieve_all_messages() {
 		fetch("/get_all_messages", {
 			method: "GET",
@@ -88,10 +107,19 @@ export default function Chat(props: chatProps) {
 		})
 	}
 
+	// Retrieve only messages that the user has not loaded
 	function retrieve_new_messages() {
+		console.log(rawMessages)
+		// If no raw messages loaded on client side then retrieve all messages from server
+		if (!rawMessages.length) { 
+			retrieve_all_messages();
+			return null
+		}
+		// Retrieve unix timestamp of last message user has
 		let last_message_unix = rawMessages[rawMessages.length-1][3]
 		const queryString = `/get_new_messages?time=${last_message_unix}`;
 		console.log(queryString)
+		// Request new messages with query
 		fetch(queryString, {
 			method: "GET",
 			headers: {"content_type":"application/json"}
@@ -103,7 +131,19 @@ export default function Chat(props: chatProps) {
 			console.log("All (raw) messages are:")
 			console.log(rawMessages)
 			if (data.new_messages.length) {
-				setRawMessages(rawMessages => [...rawMessages, data.new_messages])
+				setNewMessages(data.new_messages)
+				setRawMessages(rawMessages => [...rawMessages, ...data.new_messages])
+				const newMessagesJSX = data.new_messages.map((message_info:string[]) => {
+					// Generate a message component for every message
+					return (
+						<Message
+							name={message_info[0]}
+							date={message_info[1]}
+							message={message_info[2]}
+						/>
+					)
+				})
+				setCurrentMessages(currentMessages => [...currentMessages, ...newMessagesJSX])
 			}
 		}))
 	}
