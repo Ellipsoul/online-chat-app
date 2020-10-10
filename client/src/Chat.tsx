@@ -66,9 +66,6 @@ export default function Chat(props: chatProps) {
 		}
 	}
 
-	// Concatenate 
-
-
 	// Enter key functionality for sending messages
 	const checkEnterPressed = (e:any) => {
 		if (e.key == "Enter") {
@@ -148,6 +145,13 @@ export default function Chat(props: chatProps) {
 		}))
 	}
 
+	// Handle automatic scrolling down
+	const messagesEndRef:any = useRef(null);  // Bottom of messages reference
+	const scrollToBottom = () => {
+		messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+	};
+	useEffect(scrollToBottom, [currentMessages]);
+
 	// Delete all messages (Developer functionality only)
 	function delete_messages() {
 		fetch("/clear_messages", {
@@ -159,13 +163,6 @@ export default function Chat(props: chatProps) {
 	// Determine number of rows for the chat input box
 	const height:number = window.innerHeight;
 	const numrows:number = Math.floor(height/200);
-
-	// Handle automatic scrolling down (Later)
-	const messagesEndRef:any = useRef(null);
-	const scrollToBottom = () => {
-		messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-	};
-	useEffect(scrollToBottom, [currentMessages]);
 
 	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
 	// Snackbar close handling
@@ -184,10 +181,10 @@ export default function Chat(props: chatProps) {
 
 					{/* Div showing all chat messages */}
 					<div className="chat_messages_div">
+						{ currentMessages }
 						<button onClick={delete_messages}> Delete all messages </button>
 						<button onClick={retrieve_all_messages}> Show all messages </button>
 						<button onClick={retrieve_new_messages}> Show new messages </button>
-						{ currentMessages }
 						<div ref={messagesEndRef} />
 					</div>
 
