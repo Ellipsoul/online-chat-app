@@ -51,7 +51,7 @@ export default function Chat(props: chatProps) {
 			})
 			.then(response => { return response.json()})
 			setMessageField("")  // Empty the message container
-			setMessageKey(messageKey+1)
+			setMessageKey(messageKeyRef.current+1)
 			console.log("Message sent!")
 			const sent_message:any = 
 				<Message
@@ -98,7 +98,7 @@ export default function Chat(props: chatProps) {
 		.then((data) => {
 			setRawMessages(data.all_messages);
 			const length:number = data.all_messages.length;
-			setMessageKey(messageKey+length)
+			setMessageKey(messageKeyRef.current+length)
 			setCurrentMessages(data.all_messages.map((message_info:string[], index:number) => {
 				// Generate a message component for every message
 				return (
@@ -140,7 +140,7 @@ export default function Chat(props: chatProps) {
 				setNewMessages(data.new_messages)
 				setRawMessages(rawMessages => [...rawMessages, ...data.new_messages])
 				const length = data.new_messages.length;
-				setMessageKey(messageKey + length)
+				setMessageKey(messageKeyRef.current + length)
 				const newMessagesJSX = data.new_messages.map((message_info:string[], index:number) => {
 					// Generate a message component for every message
 					return (
@@ -180,7 +180,7 @@ export default function Chat(props: chatProps) {
 	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
 	// Snackbar close handling
 	const closeSnackBar = () => {
-		setOpen(false);
+		setOpen(false)
 	}
 
 	useEffect(() => {
@@ -189,10 +189,6 @@ export default function Chat(props: chatProps) {
 		}, 1000)
 		return () => clearInterval(interval);
 	}, []);
-
-	const [timing, setTiming] = useState(0);
-	const timingRef = useRef(timing);
-	timingRef.current = timing;
 
 	return (
 		<>
