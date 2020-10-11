@@ -22,7 +22,10 @@ export default function Chat(props: chatProps) {
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
 	const [latestMessageTime, setLatestMessageTime] = useState(0);
+	const latestMessageTimeRef = useRef(latestMessageTime);
+  	latestMessageTimeRef.current = latestMessageTime;
 	const [messageKey, setMessageKey] = useState(0);
+
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
@@ -79,6 +82,8 @@ export default function Chat(props: chatProps) {
 
 	const [newMessages, setNewMessages] = useState<string[][]>([[]])       // New messages in JSON format
 	const [rawMessages, setRawMessages] = useState<string[][]>([[]]); 	   // All messages in JSON format
+	const rawMessagesRef = useRef(rawMessages);
+  	rawMessagesRef.current = rawMessages;
 	const [currentMessages, setCurrentMessages] = useState<string[][]>([[]]);  // All messages in JSX
 
 	// Retrieve all current messages from the server
@@ -115,7 +120,7 @@ export default function Chat(props: chatProps) {
 			return null
 		}
 		// Retrieve unix timestamp of last message user has (latest between user sent and others sent)
-		let last_message_unix = (parseInt(rawMessages[rawMessages.length-1][3]) > latestMessageTime) ? rawMessages[rawMessages.length-1][3] : latestMessageTime.toString()
+		let last_message_unix = (parseInt(rawMessagesRef.current[rawMessagesRef.current.length-1][3]) > latestMessageTimeRef.current) ? rawMessagesRef.current[rawMessagesRef.current.length-1][3] : latestMessageTimeRef.current.toString()
 		const queryString = `/get_new_messages?time=${last_message_unix}`;
 		console.log(queryString)
 		// Request new messages with query
@@ -177,11 +182,15 @@ export default function Chat(props: chatProps) {
 	}
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-		  retrieve_new_messages();
-		}, 1000);
-		return () => clearTimeout(timer);
+		const interval = setInterval(() => {
+			retrieve_new_messages();
+		}, 1000)
+		return () => clearInterval(interval);
 	}, []);
+
+	const [timing, setTiming] = useState(0);
+	const timingRef = useRef(timing);
+	timingRef.current = timing;
 
 	return (
 		<>
