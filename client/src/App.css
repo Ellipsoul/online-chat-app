@@ -220,19 +220,19 @@
 	width: 5px;
 }
   
-  /* Track */
+/* Track */
 ::-webkit-scrollbar-track {
 	background: #f1f1f1;
 	border-radius: 10px;
 }
   
-  /* Handle */
+/* Handle */
 ::-webkit-scrollbar-thumb {
 	background: rgb(156, 156, 156);
 	border-radius: 10px;
 }
   
-  /* Handle on hover */
+/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: rgb(139, 139, 139);
 }
