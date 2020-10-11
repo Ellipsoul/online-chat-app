@@ -25,6 +25,8 @@ export default function Chat(props: chatProps) {
 	const latestMessageTimeRef = useRef(latestMessageTime);
   	latestMessageTimeRef.current = latestMessageTime;
 	const [messageKey, setMessageKey] = useState(0);
+	const messageKeyRef = useRef(messageKey);
+	messageKeyRef.current = messageKey;
 
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
@@ -53,7 +55,7 @@ export default function Chat(props: chatProps) {
 			console.log("Message sent!")
 			const sent_message:any = 
 				<Message
-					key={messageKey}
+					key={messageKeyRef.current}
 					name={name}
 					date={date.toString()}
 					message={message}
@@ -101,7 +103,7 @@ export default function Chat(props: chatProps) {
 				// Generate a message component for every message
 				return (
 					<Message
-						key={messageKey - length + index}
+						key={messageKeyRef.current - length + index}
 						name={message_info[0]}
 						date={message_info[1]}
 						message={message_info[2]}
@@ -115,7 +117,7 @@ export default function Chat(props: chatProps) {
 	function retrieve_new_messages() {
 		console.log(rawMessages)
 		// If no raw messages loaded on client side then retrieve all messages from server
-		if (!rawMessages.length) { 
+		if (!rawMessagesRef.current.length) { 
 			retrieve_all_messages();
 			return null
 		}
@@ -143,7 +145,7 @@ export default function Chat(props: chatProps) {
 					// Generate a message component for every message
 					return (
 						<Message
-							key={messageKey - length + index}
+							key={messageKeyRef.current - length + index}
 							name={message_info[0]}
 							date={message_info[1]}
 							message={message_info[2]}
