@@ -22,6 +22,7 @@ export default function Chat(props: chatProps) {
 	// Send information about input field to backend
 	const [messageField, setMessageField] = useState("");
 	const [latestMessageTime, setLatestMessageTime] = useState(0);
+	const [messageKey, setMessageKey] = useState(0);
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
@@ -45,9 +46,11 @@ export default function Chat(props: chatProps) {
 			})
 			.then(response => { return response.json()})
 			setMessageField("")  // Empty the message container
+			setMessageKey(messageKey+1)
 			console.log("Message sent!")
 			const sent_message:any = 
 				<Message
+					key={messageKey}
 					name={name}
 					date={date.toString()}
 					message={message}
@@ -87,10 +90,13 @@ export default function Chat(props: chatProps) {
 		.then((res) => res.json())
 		.then((data) => {
 			setRawMessages(data.all_messages);
-			setCurrentMessages(data.all_messages.map((message_info:string[]) => {
+			const length:number = data.all_messages.length;
+			setMessageKey(messageKey+length)
+			setCurrentMessages(data.all_messages.map((message_info:string[], index:number) => {
 				// Generate a message component for every message
 				return (
 					<Message
+						key={messageKey - length + index}
 						name={message_info[0]}
 						date={message_info[1]}
 						message={message_info[2]}
@@ -126,10 +132,13 @@ export default function Chat(props: chatProps) {
 			if (data.new_messages.length) {
 				setNewMessages(data.new_messages)
 				setRawMessages(rawMessages => [...rawMessages, ...data.new_messages])
-				const newMessagesJSX = data.new_messages.map((message_info:string[]) => {
+				const length = data.new_messages.length;
+				setMessageKey(messageKey + length)
+				const newMessagesJSX = data.new_messages.map((message_info:string[], index:number) => {
 					// Generate a message component for every message
 					return (
 						<Message
+							key={messageKey - length + index}
 							name={message_info[0]}
 							date={message_info[1]}
 							message={message_info[2]}
@@ -154,6 +163,7 @@ export default function Chat(props: chatProps) {
 			method:"DELETE",
 			headers: {"content_type":"application/json"}
 		})
+		.then(() => {console.log("Messages deleted!")})
 	}
 
 	// Determine number of rows for the chat input box
@@ -165,6 +175,13 @@ export default function Chat(props: chatProps) {
 	const closeSnackBar = () => {
 		setOpen(false);
 	}
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+		  retrieve_new_messages();
+		}, 1000);
+		return () => clearTimeout(timer);
+	}, []);
 
 	return (
 		<>
