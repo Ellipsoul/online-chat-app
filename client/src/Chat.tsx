@@ -4,9 +4,9 @@ import './App.css';
 import { useLocation } from "react-router-dom";
 import Message from "./Message";
 
-export interface chatProps {}
+export interface chatProps {}  // No props being used right now
 
-// Defining location type to access name
+// Defining location type to access name state
 export interface locationProps {
 	pathname: string;
 	search: string;
@@ -19,24 +19,27 @@ export default function Chat(props: chatProps) {
 	// Retrieve props passed from login
 	const location = useLocation() as locationProps;
 
-	// Send information about input field to backend
-	const [messageField, setMessageField] = useState("");
-	const [latestMessageTime, setLatestMessageTime] = useState(0);
-	const latestMessageTimeRef = useRef(latestMessageTime);
-  	latestMessageTimeRef.current = latestMessageTime;
-	const [messageKey, setMessageKey] = useState(0);
-	const messageKeyRef = useRef(messageKey);
+	const [messageField, setMessageField] = useState("");           // Message input field
+
+	const [latestMessageTime, setLatestMessageTime] = useState(0);  // Last received/sent message time
+	const latestMessageTimeRef = useRef(latestMessageTime);         // Reference
+	latestMessageTimeRef.current = latestMessageTime;
+	
+	const [messageKey, setMessageKey] = useState(0);				// Div keys state
+	const messageKeyRef = useRef(messageKey);                       // Reference
 	messageKeyRef.current = messageKey;
 
+	// Send information about input field to backend
 	const handleSubmitMessage = (e:SyntheticEvent) => {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
+		// Extract message fields
 		const name = location.state.name;
 		const date = new Date(Date.now());
 		const message = messageField;
 		const date_unix = date.getTime();
 
-		// Send the message
+		// Send the message with POST request
 		if (messageField.length !== 0 && messageField.length < 1000) {
 			fetch("/send_message", {
 			method:"POST",
@@ -46,13 +49,15 @@ export default function Chat(props: chatProps) {
 				"name": name,
 				"date": date.toString(),
 				"message": message,
-				"date_unix": date_unix  // Last column is unix timestamp
+				"date_unix": date_unix                     // Unix timestamp
 				})
 			})
 			.then(response => { return response.json()})
-			setMessageField("")  // Empty the message container
-			setMessageKey(messageKeyRef.current+1)
 			console.log("Message sent!")
+
+			setMessageField("")                            // Empty the message container
+			// Increment message key and add message locally
+			setMessageKey(messageKeyRef.current+1)
 			const sent_message:any = 
 				<Message
 					key={messageKeyRef.current}
@@ -61,10 +66,10 @@ export default function Chat(props: chatProps) {
 					message={message}
 				/>
 			setCurrentMessages(currentMessages => [...currentMessages, sent_message])
-			setLatestMessageTime(date_unix)
+			setLatestMessageTime(date_unix)  // Update latest message time
 			return false
-			}
-		// Flag down empty messages
+		}
+		// Flag down empty/long messages and open snackbar
 		else {
 			setOpen(true);
 		}
@@ -72,9 +77,7 @@ export default function Chat(props: chatProps) {
 
 	// Enter key functionality for sending messages
 	const checkEnterPressed = (e:any) => {
-		if (e.key == "Enter") {
-			handleSubmitMessage(e)
-		}
+		if (e.key == "Enter") { handleSubmitMessage(e) }
 	}
 
 	// Retrieve all messages when page is loaded
@@ -82,13 +85,13 @@ export default function Chat(props: chatProps) {
 		retrieve_all_messages();
 	}, [])
 
-	const [newMessages, setNewMessages] = useState<string[][]>([[]])       // New messages in JSON format
-	const [rawMessages, setRawMessages] = useState<string[][]>([[]]); 	   // All messages in JSON format
-	const rawMessagesRef = useRef(rawMessages);
-  	rawMessagesRef.current = rawMessages;
-	const [currentMessages, setCurrentMessages] = useState<string[][]>([[]]);  // All messages in JSX
+	const [rawMessages, setRawMessages] = useState<string[][]>([[]]);  // All messages in raw JSON format
+	const rawMessagesRef = useRef(rawMessages);                        // Reference handling
+	rawMessagesRef.current = rawMessages;
 
-	// Retrieve all current messages from the server
+	const [currentMessages, setCurrentMessages] = useState<string[][]>([[]]);   // All messages in JSX format
+
+	// Retrieve all current messages from the server (only really call on first load of page)
 	function retrieve_all_messages() {
 		fetch("/get_all_messages", {
 			method: "GET",
@@ -96,9 +99,10 @@ export default function Chat(props: chatProps) {
 		})
 		.then((res) => res.json())
 		.then((data) => {
-			setRawMessages(data.all_messages);
-			const length:number = data.all_messages.length;
-			setMessageKey(messageKeyRef.current+length)
+			console.log("Retrieved all messages from server");
+			setRawMessages(data.all_messages);                  // Update raw messages
+			const length:number = data.all_messages.length;     // Handle div keys logic 
+			setMessageKey(messageKeyRef.current+length);
 			setCurrentMessages(data.all_messages.map((message_info:string[], index:number) => {
 				// Generate a message component for every message
 				return (
@@ -115,16 +119,18 @@ export default function Chat(props: chatProps) {
 
 	// Retrieve only messages that the user has not loaded
 	function retrieve_new_messages() {
-		console.log(rawMessages)
-		// If no raw messages loaded on client side then retrieve all messages from server
+		// If no raw messages loaded on client side then retrieve all messages from serverm instead
 		if (!rawMessagesRef.current.length) { 
 			retrieve_all_messages();
 			return null
 		}
 		// Retrieve unix timestamp of last message user has (latest between user sent and others sent)
 		let last_message_unix = (parseInt(rawMessagesRef.current[rawMessagesRef.current.length-1][3]) > latestMessageTimeRef.current) ? rawMessagesRef.current[rawMessagesRef.current.length-1][3] : latestMessageTimeRef.current.toString()
+
+		// Defining GET request query
 		const queryString = `/get_new_messages?time=${last_message_unix}`;
-		console.log(queryString)
+		console.log(`Getting new messages with query: ${queryString} for user ${location.state.name}`)
+
 		// Request new messages with query
 		fetch(queryString, {
 			method: "GET",
@@ -132,14 +138,13 @@ export default function Chat(props: chatProps) {
 		})
 		.then((res) => res.json())
 		.then((data => {
+			console.log(`Retrieve new messages from server for user ${location.state.name}`)
 			console.log("New messages are:")
 			console.log(data.new_messages)
-			console.log("All (raw) messages are:")
-			console.log(rawMessages)
+			// Render the new messages if some are retrieved
 			if (data.new_messages.length) {
-				setNewMessages(data.new_messages)
-				setRawMessages(rawMessages => [...rawMessages, ...data.new_messages])
-				const length = data.new_messages.length;
+				setRawMessages(rawMessages => [...rawMessages, ...data.new_messages])  // Update raw messsages
+				const length = data.new_messages.length;        					   // Handle div keys
 				setMessageKey(messageKeyRef.current + length)
 				const newMessagesJSX = data.new_messages.map((message_info:string[], index:number) => {
 					// Generate a message component for every message
@@ -152,6 +157,7 @@ export default function Chat(props: chatProps) {
 						/>
 					)
 				})
+				// Concatenate with currently existing messages
 				setCurrentMessages(currentMessages => [...currentMessages, ...newMessagesJSX])
 			}
 		}))
@@ -177,12 +183,14 @@ export default function Chat(props: chatProps) {
 	const height:number = window.innerHeight;
 	const numrows:number = Math.floor(height/200);
 
-	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
+	// Tracks snackbar status
+	const [openSnackBar, setOpen] = useState(false);	 	
 	// Snackbar close handling
 	const closeSnackBar = () => {
 		setOpen(false)
 	}
 
+	// IMPORTANT: Asynchronously queries the server for new messages every second
 	useEffect(() => {
 		const interval = setInterval(() => {
 			retrieve_new_messages();
@@ -198,16 +206,14 @@ export default function Chat(props: chatProps) {
 
 					{/* Div for displaying and deleting chat messages */}
 					<div className="chat_messages_container">
-
-					{/* Div showing all chat messages */}
-					<div className="chat_messages_div">
-						{ currentMessages }
-						<button onClick={delete_messages}> Delete all messages </button>
-						<button onClick={retrieve_all_messages}> Show all messages </button>
-						<button onClick={retrieve_new_messages}> Show new messages </button>
-						<div ref={messagesEndRef} />
-					</div>
-
+						{/* Div showing all chat messages */}
+						<div className="chat_messages_div">
+							{ currentMessages }
+							<button onClick={delete_messages}> Delete all messages </button>
+							<button onClick={retrieve_all_messages}> Show all messages </button>
+							<button onClick={retrieve_new_messages}> Show new messages </button>
+							<div ref={messagesEndRef} />
+						</div>
 					</div>
 
 					{/* Div for chat message input field */}
@@ -227,6 +233,7 @@ export default function Chat(props: chatProps) {
 						</Box>
 					</div>
 
+					{/* Warning snackbar for invalid message */}
 					<Snackbar
 						color="secondary"
 						anchorOrigin={{

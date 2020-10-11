@@ -42,11 +42,11 @@ class send_message(Resource):
         c.execute(sqlite_insert, data_tuple)
         conn.commit()
         conn.close()
-
         return
 api.add_resource(send_message, "/send_message")
 
 
+# GET method to retrieve all messages from the database
 class get_all_messages(Resource):
     def get(self):
         conn = sqlite3.connect('messages.db')
@@ -55,23 +55,30 @@ class get_all_messages(Resource):
         all_messages = c.fetchall()
         conn.commit()
         conn.close()
+        print("All messages sent to client:")
+        print(all_messages)
         return {"all_messages": all_messages}
 api.add_resource(get_all_messages, "/get_all_messages")
 
 
+# GET method with query to retrieve all new messages not yet received by the user
 class get_new_messages(Resource):
     def get(self):
         time = request.args.get('time')
         conn = sqlite3.connect('messages.db')
         c = conn.cursor()
+        # Filter by unix time of latest message user has received
         c.execute(f"SELECT * FROM messages WHERE date_unix > {time}")
         new_messages = c.fetchall()
         conn.commit()
         conn.close()
+        print("New messages sent to client:")
         print(new_messages)
         return {"new_messages": new_messages}
 api.add_resource(get_new_messages, "/get_new_messages")
 
+
+# DELETE method to clear all messages (DEV only)
 class clear_messages(Resource):
     def delete(self):
         conn = sqlite3.connect('messages.db')
@@ -79,11 +86,11 @@ class clear_messages(Resource):
         c.execute("""DELETE FROM messages""")
         conn.commit()
         conn.close()
-        print("Messages cleared!")
+        print("All messages cleared!")
         return
 api.add_resource(clear_messages, "/clear_messages")
 
 
-# Is this necessary for backend?
-if __name__ == "__main__":
-    app.run(debug=True)
+# Not necessary for backend
+# if __name__ == "__main__":
+#     app.run(debug=True)

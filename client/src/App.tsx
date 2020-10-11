@@ -8,6 +8,7 @@ function App():ReactElement {
 	console.log('Frontend is now running!');	
 
 	return (
+		// Basice router paths to the login and chat page
 		<>
 			<Router>
 				<Switch>

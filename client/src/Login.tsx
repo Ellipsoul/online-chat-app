@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent, ReactElement, createContext } from 'react';
+import React, { useState, SyntheticEvent, ReactElement } from 'react';
 import { Container } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import './App.css';
@@ -12,6 +12,7 @@ export default function Login():ReactElement {
 	const [openSnackBar, setOpen] = useState(false);	 	// Tracks snackbar status
 	const [alertMessage, setAlertMessage] = useState(""); 	// Tracks alert message
 
+	// Occurs when a redirect path state is detected
 	if (shouldRedirect) {
 		// Redirect to main chat after name submit
 		return (
@@ -22,27 +23,36 @@ export default function Login():ReactElement {
 		)
 	}
 
+	// Handling name submission
 	const handleSubmitName = (e:SyntheticEvent) => {
+		// No name entered
 		if (!name.length) {
 			setAlertMessage("Please enter a non-empty name")
 			setOpen(true);
 		}
+		// Name too long
 		else if (name.length > 20) {
 			setAlertMessage("Please enter a shorter name!")
 			setOpen(true);
-		} else {
+		} 
+		// Successful redirect to chat
+		else {
 			return redirectTo('/chat');
 		}
 	}
 
+	// Used to determine button and input field size
 	const height:number = window.innerHeight;
 	const width:number = window.innerWidth;
+
+	// Theme for name input field
 	const input_theme = createMuiTheme({
 		typography: {
 		  fontSize: 0.03 * height
 		}
 	  });
 
+	// Theme for button
 	const button_theme = createMuiTheme({
 		typography: {
 			fontSize: 0.02 * width + 0.02 * height
@@ -100,6 +110,7 @@ export default function Login():ReactElement {
 
 					{/* User login area */}
 					<div id="name_login">
+						{/* Name input field */}
 						<div className="name_input"> 
 							<ThemeProvider theme={input_theme}>
 								<TextField
@@ -115,7 +126,7 @@ export default function Login():ReactElement {
 								/>
 							</ThemeProvider>
 						</div>
-						
+						{/* Submit button */}
 						<div className="name_submit_div">
 							<ThemeProvider theme={button_theme}>
 								<Button 
@@ -129,6 +140,7 @@ export default function Login():ReactElement {
 							</ThemeProvider>
 						</div>
 
+						{/* Invalid name warning snackbar */}
 						<Snackbar
 							color="secondary"
 							anchorOrigin={{
@@ -140,7 +152,6 @@ export default function Login():ReactElement {
 							autoHideDuration={3000}
 							message={alertMessage}
 						/>
-
 					</div>
 
 				</section>
