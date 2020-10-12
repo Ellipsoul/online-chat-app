@@ -22,8 +22,6 @@ conn.commit()
 conn.close()
 print("Backend is now running")
 
-app = Flask(__name__, static_folder='../client/build', static_url_path='/')
-
 # Root directory (likely not needed)
 @app.route('/api/')
 def index():
@@ -95,5 +93,5 @@ api.add_resource(clear_messages, "/api/clear_messages")
 
 
 # Not necessary for backend
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+# if __name__ == "__main__":
+#     app.run(debug=True)
