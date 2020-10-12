@@ -41,7 +41,7 @@ export default function Chat(props: chatProps) {
 
 		// Send the message with POST request
 		if (messageField.length !== 0 && messageField.length < 1000) {
-			fetch("/send_message", {
+			fetch("/api/send_message", {
 			method:"POST",
 			headers: {"content_type":"application/json"},
 			body:JSON.stringify(
@@ -93,7 +93,7 @@ export default function Chat(props: chatProps) {
 
 	// Retrieve all current messages from the server (only really call on first load of page)
 	function retrieve_all_messages() {
-		fetch("/get_all_messages", {
+		fetch("/api/get_all_messages", {
 			method: "GET",
 			headers: {"content_type":"application/json"}
 		})
@@ -128,7 +128,7 @@ export default function Chat(props: chatProps) {
 		let last_message_unix = (parseInt(rawMessagesRef.current[rawMessagesRef.current.length-1][3]) > latestMessageTimeRef.current) ? rawMessagesRef.current[rawMessagesRef.current.length-1][3] : latestMessageTimeRef.current.toString()
 
 		// Defining GET request query
-		const queryString = `/get_new_messages?time=${last_message_unix}`;
+		const queryString = `/api/get_new_messages?time=${last_message_unix}`;
 		console.log(`Getting new messages with query: ${queryString} for user ${location.state.name}`)
 
 		// Request new messages with query
@@ -172,7 +172,7 @@ export default function Chat(props: chatProps) {
 
 	// Delete all messages (Developer functionality only)
 	function delete_messages() {
-		fetch("/clear_messages", {
+		fetch("/api/clear_messages", {
 			method:"DELETE",
 			headers: {"content_type":"application/json"}
 		})

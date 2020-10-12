@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 from flask import Flask, jsonify, render_template, request
 from flask_restful import Api, Resource
@@ -21,10 +22,12 @@ conn.commit()
 conn.close()
 print("Backend is now running")
 
+app = Flask(__name__, static_folder='../client/build', static_url_path='/')
+
 # Root directory (likely not needed)
-@app.route('/')
+@app.route('/api/')
 def index():
-    return render_template('index.html')
+    return app.send_static_file('index.html')
 
 
 # POST method to accept HTTP POST request from client, sending a message
@@ -43,7 +46,7 @@ class send_message(Resource):
         conn.commit()
         conn.close()
         return
-api.add_resource(send_message, "/send_message")
+api.add_resource(send_message, "/api/send_message")
 
 
 # GET method to retrieve all messages from the database
@@ -58,7 +61,7 @@ class get_all_messages(Resource):
         print("All messages sent to client:")
         print(all_messages)
         return {"all_messages": all_messages}
-api.add_resource(get_all_messages, "/get_all_messages")
+api.add_resource(get_all_messages, "/api/get_all_messages")
 
 
 # GET method with query to retrieve all new messages not yet received by the user
@@ -75,7 +78,7 @@ class get_new_messages(Resource):
         print("New messages sent to client:")
         print(new_messages)
         return {"new_messages": new_messages}
-api.add_resource(get_new_messages, "/get_new_messages")
+api.add_resource(get_new_messages, "/api/get_new_messages")
 
 
 # DELETE method to clear all messages (DEV only)
@@ -88,9 +91,9 @@ class clear_messages(Resource):
         conn.close()
         print("All messages cleared!")
         return
-api.add_resource(clear_messages, "/clear_messages")
+api.add_resource(clear_messages, "/api/clear_messages")
 
 
 # Not necessary for backend
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
