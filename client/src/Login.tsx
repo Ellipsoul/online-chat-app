@@ -81,7 +81,7 @@ export default function Login():ReactElement {
 						Welcome!
 					</div>
 					<div id="info"> 
-						This is a very simple chat site where you can connect with a unique name and chat with all other connect users! This app was made with:
+						This is a very simple chat site where you can connect with a unique name and chat with all other connect users! Made with: 
 					</div>
 
 					{/* Tech links */}
@@ -89,23 +89,44 @@ export default function Login():ReactElement {
 						{/* GitHub */}
 						<div>
 							<a href="https://github.com/Ellipsoul" target="_blank">
-								<img src="/images/github_logo.png" className="github_logo"></img>
+								<img src="/images/github_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* React */}
 						<div>
 							<a href="https://reactjs.org/" target="_blank">
-								<img src="/images/react_logo.png" className="react_logo"></img>
+								<img src="/images/react_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* Typescript */}
-						<a href="https://www.typescriptlang.org/" target="_blank">
-							<div>
-								<img src="images/typescript_logo.png" className="typescript_logo"></img>
-							</div>
-						</a>
+						<div>
+							<a href="https://www.typescriptlang.org/" target="_blank">
+								<img src="images/typescript_logo.png" className="logo"></img>
+							</a>
+						</div>
+
+						{/* Python */}
+						<div>
+							<a href="https://www.python.org/" target="_blank">
+								<img src="/images/python_logo.png" className="logo"></img>
+							</a>
+						</div>
+
+						{/* Flask */}
+						<div>
+							<a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">
+								<img src="/images/flask_logo.png" className="logo"></img>
+							</a>
+						</div>
+
+						{/* Typescript */}
+						<div>
+							<a href="https://aws.amazon.com/" target="_blank">
+								<img src="/images/aws_logo.png" className="logo"></img>
+							</a>
+						</div>
 					</div>
 
 					{/* User login area */}

@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent, useEffect, useRef, ReactElement } from 'react';
+import React, { useState, SyntheticEvent, useEffect, useRef, useMemo } from 'react';
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
@@ -176,7 +176,7 @@ export default function Chat(props: chatProps) {
 			method:"DELETE",
 			headers: {"content_type":"application/json"}
 		})
-		.then(() => {console.log("Messages deleted!")})
+		.then(() => {console.log("All messages deleted!")})
 	}
 
 	// Determine number of rows for the chat input box
@@ -198,6 +198,25 @@ export default function Chat(props: chatProps) {
 		return () => clearInterval(interval);
 	}, []);
 
+	// State handler for dev button
+	const [devButtons, showDevButtons] = useState(false);
+	function open_dev_menu() {
+		console.log("Dev menu toggled")
+		showDevButtons(!devButtons)
+	}
+
+	// Send request to delete old messages
+	function delete_old_messages() {
+		const dateUnix = Date.now();
+		const queryString = `api/clear_old_messages?time=${dateUnix}`
+
+		fetch(queryString, {
+			method:"DELETE",
+			headers: {"content_type":"application/json"}
+		})
+		.then(() => {console.log("Old messages deleted!")})
+	}
+
 	return (
 		<>
 			{/* Main container and section */}
@@ -209,9 +228,6 @@ export default function Chat(props: chatProps) {
 						{/* Div showing all chat messages */}
 						<div className="chat_messages_div">
 							{ currentMessages }
-							<button onClick={delete_messages}> Delete all messages </button>
-							<button onClick={retrieve_all_messages}> Show all messages </button>
-							<button onClick={retrieve_new_messages}> Show new messages </button>
 							<div ref={messagesEndRef} />
 						</div>
 					</div>
@@ -260,6 +276,15 @@ export default function Chat(props: chatProps) {
 
 				</section>
 			</Container>
+
+			<button className="hidden_button" onClick={open_dev_menu}>D</button>
+			{devButtons ? <div className="dev_buttons_div">
+				<button onClick={delete_messages}>DA</button>
+				<button onClick={delete_old_messages}>DO</button>
+				<button onClick={retrieve_all_messages}>RA</button>
+				<button onClick={retrieve_new_messages}>RN</button>
+			</div>: null}
+
 		</>
 	)
 }

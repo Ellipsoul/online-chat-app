@@ -3,6 +3,7 @@
 .large_login_container {
 	background-color: cornsilk;
 	border-radius: 50px;
+	overflow: hidden;
 }
 
 /* Main container */
@@ -16,7 +17,7 @@
 		"info"
 		"logos"
 		"name_login";
-	grid-template-rows: minmax(50px, 1fr) minmax(50px, 1fr) auto minmax(150px, 2fr);
+	grid-template-rows: 15vh 16vh 35vh auto;
 	row-gap: 1vh;
 	height: 97vh;
 }
@@ -43,6 +44,7 @@
 	font-style: normal;
 	font-variant: normal;
 	text-transform: none;
+	padding-top: 20px;
 }
 
 /* GitHub and App information */
@@ -73,6 +75,8 @@
 	grid-area: logos;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 50% 50%;
+	row-gap: 3px;
 
 	width: 65%;
 	height: 100%;
@@ -89,22 +93,11 @@
 	margin: auto;
 }
 
-.github_logo {
+.logo {
 	display: block;
 	margin: auto;
-	width: 80%;
-}
-
-.react_logo {
-	display: block;
-	margin: auto;
-	width: 80%;
-}
-
-.typescript_logo {
-	display: block;
-	margin: auto;
-	width: 80%;
+	max-width: 90%;
+	max-height: 90%;
 }
 
 /* Login div */
@@ -235,6 +228,25 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: rgb(139, 139, 139);
+}
+
+/* Dev Button */
+.hidden_button {
+	position: absolute;
+	top: 0%;
+	right: 0%;
+	background: transparent;
+	border: none !important;
+	color: transparent;
+}
+
+.dev_buttons_div {
+	position: absolute;
+	bottom: 0%;
+	left: 0%;
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	height: auto;
 }
 
 /* -------------------------------------------------------------------------------------------------------------- */

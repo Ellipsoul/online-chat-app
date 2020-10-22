@@ -92,6 +92,20 @@ class clear_messages(Resource):
 api.add_resource(clear_messages, "/api/clear_messages")
 
 
+# DELETE method to clear messages more than one week old (DEV only)
+class clear_old_messages(Resource):
+    def delete(self):
+        time = request.args.get('time')
+        time_last_week = str(int(time) - 604800000)  # Deleting all messages more than one week old
+        conn = sqlite3.connect('messages.db')
+        c = conn.cursor()
+        c.execute(f"DELETE FROM messages where date_unix < {time_last_week}")
+        conn.commit()
+        conn.close()
+        print("Old messages cleared!")
+        return
+api.add_resource(clear_old_messages, "/api/clear_old_messages")
+
 # Not necessary for backend
 # if __name__ == "__main__":
 #     app.run(debug=True)
