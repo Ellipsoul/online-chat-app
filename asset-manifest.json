@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/online-chat-app/static/css/main.e9eaacef.chunk.css",
-    "main.js": "/online-chat-app/static/js/main.3ba21132.chunk.js",
-    "main.js.map": "/online-chat-app/static/js/main.3ba21132.chunk.js.map",
+    "main.js": "/online-chat-app/static/js/main.abf65877.chunk.js",
+    "main.js.map": "/online-chat-app/static/js/main.abf65877.chunk.js.map",
     "runtime-main.js": "/online-chat-app/static/js/runtime-main.ecd1c244.js",
     "runtime-main.js.map": "/online-chat-app/static/js/runtime-main.ecd1c244.js.map",
     "static/js/2.442e5c09.chunk.js": "/online-chat-app/static/js/2.442e5c09.chunk.js",
     "static/js/2.442e5c09.chunk.js.map": "/online-chat-app/static/js/2.442e5c09.chunk.js.map",
     "index.html": "/online-chat-app/index.html",
-    "precache-manifest.9e529f10235c624de2c8cea46b0aae02.js": "/online-chat-app/precache-manifest.9e529f10235c624de2c8cea46b0aae02.js",
+    "precache-manifest.4eff87d19cafff4645c9a21510312d61.js": "/online-chat-app/precache-manifest.4eff87d19cafff4645c9a21510312d61.js",
     "service-worker.js": "/online-chat-app/service-worker.js",
     "static/css/main.e9eaacef.chunk.css.map": "/online-chat-app/static/css/main.e9eaacef.chunk.css.map",
     "static/js/2.442e5c09.chunk.js.LICENSE.txt": "/online-chat-app/static/js/2.442e5c09.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.ecd1c244.js",
     "static/js/2.442e5c09.chunk.js",
     "static/css/main.e9eaacef.chunk.css",
-    "static/js/main.3ba21132.chunk.js"
+    "static/js/main.abf65877.chunk.js"
   ]
 }
