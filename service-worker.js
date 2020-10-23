@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/online-chat-app/precache-manifest.b72953c50384802dc44cd84fb3225144.js"
+  "/online-chat-app/precache-manifest.d7d4e00fd9e14cf903ed28450ba21315.js"
 );
 
 self.addEventListener('message', (event) => {
