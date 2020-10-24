@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 import sqlite3
 
 # Initialise app
@@ -30,13 +30,20 @@ print("Backend is now running")
 def index():
     return app.send_static_file('index.html')
 
+parser = reqparse.RequestParser()
+parser.add_argument('name')
+parser.add_argument('date')
+parser.add_argument('message')
+parser.add_argument('date_unix')
 
 # POST method to accept HTTP POST request from client, sending a message
 class send_message(Resource):
     def post(self):
+        args = parser.parse_args()
+        print(args)
         print(request)
         print(request.json)
-        message_data = request.json     # Retrieve message JSON data from client
+        # message_data = request.json     # Retrieve message JSON data from client
 
         conn = sqlite3.connect('messages.db')
         c = conn.cursor()
@@ -44,7 +51,8 @@ class send_message(Resource):
         sqlite_insert = """ INSERT INTO messages 
                         (name, date, message, date_unix)
                         VALUES (?, ?, ?, ?); """
-        data_tuple = (message_data['name'], message_data['date'], message_data['message'], message_data['date_unix'])
+        # data_tuple = (message_data['name'], message_data['date'], message_data['message'], message_data['date_unix'])
+        data_tuple = (args['name'], args['date'], args['message'], args['date_unix'])
         c.execute(sqlite_insert, data_tuple)
         conn.commit()
         conn.close()

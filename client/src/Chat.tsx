@@ -2,6 +2,7 @@ import React, { useState, SyntheticEvent, useEffect, useRef, useMemo } from 'rea
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 import Message from "./Message";
 
 export interface chatProps {}  // No props being used right now
@@ -41,20 +42,33 @@ export default function Chat(props: chatProps) {
 
 		// Send the message with POST request
 		if (messageField.length !== 0 && messageField.length < 1000) {
-			fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/send_message", {
-			method:"POST",
-			mode:"cors",
-			headers: {"content_type":"application/json"},
-			body:JSON.stringify(
-				{ 
-				"name": name,
-				"date": date.toString(),
-				"message": message,
-				"date_unix": date_unix                     // Unix timestamp
-				})
+			axios.post("https://online-chat-app-ellipsoul.herokuapp.com/api/send_message", {
+				name: name,
+				date: date.toString(),
+				message: message,
+				date_unix: date_unix
 			})
-			.then(response => { return response.json()})
-			console.log("Message sent!")
+			.then(() => {
+				console.log(`Message sent: ${message}`)
+			}, (error) => {
+				console.log(error)
+			})
+
+
+			// fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/send_message", {
+			// method:"POST",
+			// mode:"cors",
+			// headers: {"content_type":"application/json"},
+			// body:JSON.stringify(
+			// 	{ 
+			// 	"name": name,
+			// 	"date": date.toString(),
+			// 	"message": message,
+			// 	"date_unix": date_unix                     // Unix timestamp
+			// 	})
+			// })
+			// .then(response => { return response.json()})
+			// console.log("Message sent!")
 
 			setMessageField("")                            // Empty the message container
 			// Increment message key and add message locally
