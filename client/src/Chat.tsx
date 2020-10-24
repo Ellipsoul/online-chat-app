@@ -17,7 +17,7 @@ export interface locationProps {
 
 export default function Chat(props: chatProps) {
 	// Retrieve props passed from login
-	const location = useLocation() as locationProps;
+	// const location = useLocation() as locationProps; TODO:
 
 	const [messageField, setMessageField] = useState("");           // Message input field
 
@@ -34,7 +34,7 @@ export default function Chat(props: chatProps) {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
 		// Extract message fields
-		const name = location.state.name;
+		const name = 'location.state.name';
 		const date = new Date(Date.now());
 		const message = messageField;
 		const date_unix = date.getTime();
@@ -43,6 +43,7 @@ export default function Chat(props: chatProps) {
 		if (messageField.length !== 0 && messageField.length < 1000) {
 			fetch("/api/send_message", {
 			method:"POST",
+			mode:"cors",
 			headers: {"content_type":"application/json"},
 			body:JSON.stringify(
 				{ 
@@ -95,6 +96,7 @@ export default function Chat(props: chatProps) {
 	function retrieve_all_messages() {
 		fetch("/api/get_all_messages", {
 			method: "GET",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
@@ -129,16 +131,17 @@ export default function Chat(props: chatProps) {
 
 		// Defining GET request query
 		const queryString = `/api/get_new_messages?time=${last_message_unix}`;
-		console.log(`Getting new messages with query: ${queryString} for user ${location.state.name}`)
+		console.log(`Getting new messages with query: ${queryString} for user ${"location.state.name"}`)
 
 		// Request new messages with query
 		fetch(queryString, {
 			method: "GET",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
 		.then((data => {
-			console.log(`Retrieve new messages from server for user ${location.state.name}`)
+			console.log(`Retrieve new messages from server for user ${'location.state.name'}`)
 			console.log("New messages are:")
 			console.log(data.new_messages)
 			// Render the new messages if some are retrieved
@@ -174,6 +177,7 @@ export default function Chat(props: chatProps) {
 	function delete_messages() {
 		fetch("/api/clear_messages", {
 			method:"DELETE",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then(() => {console.log("All messages deleted!")})
@@ -208,10 +212,11 @@ export default function Chat(props: chatProps) {
 	// Send request to delete old messages
 	function delete_old_messages() {
 		const dateUnix = Date.now();
-		const queryString = `api/clear_old_messages?time=${dateUnix}`
+		const queryString = `/api/clear_old_messages?time=${dateUnix}`
 
 		fetch(queryString, {
 			method:"DELETE",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then(() => {console.log("Old messages deleted!")})
@@ -236,7 +241,7 @@ export default function Chat(props: chatProps) {
 					<div id="input_field_div">
 						<Box width="100%">
 							<TextField
-								label={`Say something, ${location.state.name} :)`}
+								label={`Say something, ${"location.state.name"} :)`}
 								fullWidth
 								multiline
 								rows={numrows}

@@ -3,12 +3,15 @@ import time
 import os
 
 from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
 from flask_restful import Api, Resource
 import sqlite3
 
 # Initialise app
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
+
 # Sqlite Connection and database creation
 conn = sqlite3.connect('messages.db')
 c = conn.cursor()
@@ -31,6 +34,8 @@ def index():
 # POST method to accept HTTP POST request from client, sending a message
 class send_message(Resource):
     def post(self):
+        print(request)
+        print(request.json)
         message_data = request.json     # Retrieve message JSON data from client
 
         conn = sqlite3.connect('messages.db')

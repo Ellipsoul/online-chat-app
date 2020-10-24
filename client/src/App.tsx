@@ -10,13 +10,10 @@ function App():ReactElement {
 	return (
 		// Basice router paths to the login and chat page
 		<>
+			<Chat />
 			<Router>
 				<Switch>
-					<Redirect exact from='/' to='/login'> </Redirect>
-					<Route exact path='/login'>
-						<Login />
-					</Route>
-					<Route exact path='/chat'>
+					<Route exact path='/chat'> 
 						<Chat />
 					</Route>
 				</Switch>
