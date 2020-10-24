@@ -3,12 +3,15 @@ import time
 import os
 
 from flask import Flask, jsonify, render_template, request
-from flask_restful import Api, Resource
+from flask_cors import CORS
+from flask_restful import Api, Resource, reqparse
 import sqlite3
 
 # Initialise app
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
+
 # Sqlite Connection and database creation
 conn = sqlite3.connect('messages.db')
 c = conn.cursor()
@@ -27,19 +30,24 @@ print("Backend is now running")
 def index():
     return app.send_static_file('index.html')
 
+# Parse arguments for the send message POST request
+parser = reqparse.RequestParser()
+parser.add_argument('name')
+parser.add_argument('date')
+parser.add_argument('message')
+parser.add_argument('date_unix')
 
 # POST method to accept HTTP POST request from client, sending a message
 class send_message(Resource):
     def post(self):
-        message_data = request.json     # Retrieve message JSON data from client
-
+        args = parser.parse_args()
         conn = sqlite3.connect('messages.db')
         c = conn.cursor()
         # Set up message insertion and execute
         sqlite_insert = """ INSERT INTO messages 
                         (name, date, message, date_unix)
                         VALUES (?, ?, ?, ?); """
-        data_tuple = (message_data['name'], message_data['date'], message_data['message'], message_data['date_unix'])
+        data_tuple = (args['name'], args['date'], args['message'], args['date_unix'])
         c.execute(sqlite_insert, data_tuple)
         conn.commit()
         conn.close()
@@ -105,7 +113,3 @@ class clear_old_messages(Resource):
         print("Old messages cleared!")
         return
 api.add_resource(clear_old_messages, "/api/clear_old_messages")
-
-# Not necessary for backend
-# if __name__ == "__main__":
-#     app.run(debug=True)

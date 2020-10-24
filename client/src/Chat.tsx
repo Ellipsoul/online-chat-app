@@ -1,7 +1,8 @@
-import React, { useState, SyntheticEvent, useEffect, useRef, useMemo } from 'react';
+import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 import Message from "./Message";
 
 export interface chatProps {}  // No props being used right now
@@ -41,21 +42,15 @@ export default function Chat(props: chatProps) {
 
 		// Send the message with POST request
 		if (messageField.length !== 0 && messageField.length < 1000) {
-			fetch("/api/send_message", {
-			method:"POST",
-			headers: {"content_type":"application/json"},
-			body:JSON.stringify(
-				{ 
-				"name": name,
-				"date": date.toString(),
-				"message": message,
-				"date_unix": date_unix                     // Unix timestamp
-				})
-			})
-			.then(response => { return response.json()})
-			console.log("Message sent!")
+			axios.post("https://online-chat-app-ellipsoul.herokuapp.com/api/send_message", {
+				name: name,
+				date: date.toString(),
+				message: message,
+				date_unix: date_unix
+			});
+			console.log(`Message sent: ${message}`);
 
-			setMessageField("")                            // Empty the message container
+			setMessageField("")   // Empty the message container
 			// Increment message key and add message locally
 			setMessageKey(messageKeyRef.current+1)
 			const sent_message:any = 
@@ -93,8 +88,9 @@ export default function Chat(props: chatProps) {
 
 	// Retrieve all current messages from the server (only really call on first load of page)
 	function retrieve_all_messages() {
-		fetch("/api/get_all_messages", {
+		fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/get_all_messages", {
 			method: "GET",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
@@ -128,12 +124,13 @@ export default function Chat(props: chatProps) {
 		let last_message_unix = (parseInt(rawMessagesRef.current[rawMessagesRef.current.length-1][3]) > latestMessageTimeRef.current) ? rawMessagesRef.current[rawMessagesRef.current.length-1][3] : latestMessageTimeRef.current.toString()
 
 		// Defining GET request query
-		const queryString = `/api/get_new_messages?time=${last_message_unix}`;
+		const queryString = `https://online-chat-app-ellipsoul.herokuapp.com/api/get_new_messages?time=${last_message_unix}`;
 		console.log(`Getting new messages with query: ${queryString} for user ${location.state.name}`)
 
 		// Request new messages with query
 		fetch(queryString, {
 			method: "GET",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then((res) => res.json())
@@ -172,8 +169,9 @@ export default function Chat(props: chatProps) {
 
 	// Delete all messages (Developer functionality only)
 	function delete_messages() {
-		fetch("/api/clear_messages", {
+		fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/clear_messages", {
 			method:"DELETE",
+			mode:"cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then(() => {console.log("All messages deleted!")})
@@ -194,7 +192,7 @@ export default function Chat(props: chatProps) {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			retrieve_new_messages();
-		}, 1000)
+		}, 3000)
 		return () => clearInterval(interval);
 	}, []);
 
@@ -208,10 +206,11 @@ export default function Chat(props: chatProps) {
 	// Send request to delete old messages
 	function delete_old_messages() {
 		const dateUnix = Date.now();
-		const queryString = `api/clear_old_messages?time=${dateUnix}`
+		const queryString = `https://online-chat-app-ellipsoul.herokuapp.com/api/clear_old_messages?time=${dateUnix}`
 
 		fetch(queryString, {
 			method:"DELETE",
+			mode: "cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then(() => {console.log("Old messages deleted!")})
