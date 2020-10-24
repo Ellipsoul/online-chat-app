@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useMemo } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Login from './Login'
@@ -8,10 +8,15 @@ function App():ReactElement {
 	console.log('Frontend is now running!');	
 
 	return (
-		// Basice router paths to the login and chat page
+		// Basic router paths to the login and chat page
 		<>
-			<Chat />
 			<Router>
+				<Login />
+				{/* <Switch>
+					<Route exact path='/'>
+						<Login />
+					</Route>
+				</Switch> */}
 				<Switch>
 					<Route exact path='/chat'> 
 						<Chat />

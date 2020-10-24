@@ -18,7 +18,7 @@ export interface locationProps {
 
 export default function Chat(props: chatProps) {
 	// Retrieve props passed from login
-	// const location = useLocation() as locationProps; TODO:
+	const location = useLocation() as locationProps;
 
 	const [messageField, setMessageField] = useState("");           // Message input field
 
@@ -35,7 +35,8 @@ export default function Chat(props: chatProps) {
 		e.preventDefault() // Prevents page from reloading after submitting message
 
 		// Extract message fields
-		const name = 'location.state.name';
+		const name = location.state.name;
+		console.log(name);
 		const date = new Date(Date.now());
 		const message = messageField;
 		const date_unix = date.getTime();
@@ -125,7 +126,7 @@ export default function Chat(props: chatProps) {
 
 		// Defining GET request query
 		const queryString = `https://online-chat-app-ellipsoul.herokuapp.com/api/get_new_messages?time=${last_message_unix}`;
-		console.log(`Getting new messages with query: ${queryString} for user ${"location.state.name"}`)
+		console.log(`Getting new messages with query: ${queryString} for user ${location.state.name}`)
 
 		// Request new messages with query
 		fetch(queryString, {
@@ -135,7 +136,7 @@ export default function Chat(props: chatProps) {
 		})
 		.then((res) => res.json())
 		.then((data => {
-			console.log(`Retrieve new messages from server for user ${'location.state.name'}`)
+			console.log(`Retrieve new messages from server for user ${location.state.name}`)
 			console.log("New messages are:")
 			console.log(data.new_messages)
 			// Render the new messages if some are retrieved
@@ -235,7 +236,7 @@ export default function Chat(props: chatProps) {
 					<div id="input_field_div">
 						<Box width="100%">
 							<TextField
-								label={`Say something, ${"location.state.name"} :)`}
+								label={`Say something, ${location.state.name} :)`}
 								fullWidth
 								multiline
 								rows={numrows}
