@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent, useEffect, useRef, useMemo } from 'react';
+import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
 import { Container, Button, TextField, Box, Snackbar } from '@material-ui/core';
 import './App.css';
 import { useLocation } from "react-router-dom";
@@ -36,7 +36,6 @@ export default function Chat(props: chatProps) {
 
 		// Extract message fields
 		const name = location.state.name;
-		console.log(name);
 		const date = new Date(Date.now());
 		const message = messageField;
 		const date_unix = date.getTime();
@@ -51,7 +50,7 @@ export default function Chat(props: chatProps) {
 			});
 			console.log(`Message sent: ${message}`);
 
-			setMessageField("")                            // Empty the message container
+			setMessageField("")   // Empty the message container
 			// Increment message key and add message locally
 			setMessageKey(messageKeyRef.current+1)
 			const sent_message:any = 
