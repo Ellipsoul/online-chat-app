@@ -1,15 +1,30 @@
-# online-chat-app
-Simple online chat application with client and server side
+## Online Chat Application
 
-Command to run api backend
-``` bash
-python -m flask run
-```
+### Hello
+Thank you for checking out my application! I created this simple online chat app out of pure software engineering curiosity. The client side application is currently deployed here:
 
-##### Instructions for starting front-end and back-end app
-1. Open 2 terminal windows and nagivate to project root directory
-2. In 1 terminal, cd into the backend root and type ```source venv/bin/activate``` to activate the virtual environment
-3. Change both directories into the frontend root directory
-4. Start the backend first with ```yarn start-api```, then the frontend with ```yarn start```
+[Online Chat App (Client)](https://ellipsoul.github.io/online-chat-app/)
 
-The backend is run on ```localhost:5000``` while the frontend is running on ```localhost:3000```
+And the server is deployed here. As a server, there's nothing at the root directory, but here's the subdirectory that retrieves all messages using a GET request: 
+
+[Online Chat App (Server)](https://online-chat-app-ellipsoul.herokuapp.com/api/get_all_messages)
+
+### Technologies
+
+I learnt to use a whole spectrum of languages/frameworks throughout this project. They include:
+
+- HTML
+- CSS
+- [Typescript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [Python](https://www.python.org/)
+- [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+- [SQLite](https://www.sqlite.org/index.html)
+- [GitHub Pages](https://pages.github.com/)
+- [Heroku](https://www.heroku.com/)
+
+And explored even more technologies that did not make the final product (this time):
+
+- [nginx](https://www.nginx.com/)
+- [GCP Compute Engine](https://cloud.google.com/compute)
+- [AWS EC2](https://aws.amazon.com/ec2/)
