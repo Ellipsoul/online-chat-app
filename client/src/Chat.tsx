@@ -41,7 +41,7 @@ export default function Chat(props: chatProps) {
 
 		// Send the message with POST request
 		if (messageField.length !== 0 && messageField.length < 1000) {
-			fetch("/api/send_message", {
+			fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/send_message", {
 			method:"POST",
 			mode:"cors",
 			headers: {"content_type":"application/json"},
@@ -94,7 +94,7 @@ export default function Chat(props: chatProps) {
 
 	// Retrieve all current messages from the server (only really call on first load of page)
 	function retrieve_all_messages() {
-		fetch("/api/get_all_messages", {
+		fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/get_all_messages", {
 			method: "GET",
 			mode:"cors",
 			headers: {"content_type":"application/json"}
@@ -130,7 +130,7 @@ export default function Chat(props: chatProps) {
 		let last_message_unix = (parseInt(rawMessagesRef.current[rawMessagesRef.current.length-1][3]) > latestMessageTimeRef.current) ? rawMessagesRef.current[rawMessagesRef.current.length-1][3] : latestMessageTimeRef.current.toString()
 
 		// Defining GET request query
-		const queryString = `/api/get_new_messages?time=${last_message_unix}`;
+		const queryString = `https://online-chat-app-ellipsoul.herokuapp.com/api/get_new_messages?time=${last_message_unix}`;
 		console.log(`Getting new messages with query: ${queryString} for user ${"location.state.name"}`)
 
 		// Request new messages with query
@@ -175,7 +175,7 @@ export default function Chat(props: chatProps) {
 
 	// Delete all messages (Developer functionality only)
 	function delete_messages() {
-		fetch("/api/clear_messages", {
+		fetch("https://online-chat-app-ellipsoul.herokuapp.com/api/clear_messages", {
 			method:"DELETE",
 			mode:"cors",
 			headers: {"content_type":"application/json"}
@@ -198,7 +198,7 @@ export default function Chat(props: chatProps) {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			retrieve_new_messages();
-		}, 1000)
+		}, 5000)
 		return () => clearInterval(interval);
 	}, []);
 
@@ -212,11 +212,11 @@ export default function Chat(props: chatProps) {
 	// Send request to delete old messages
 	function delete_old_messages() {
 		const dateUnix = Date.now();
-		const queryString = `/api/clear_old_messages?time=${dateUnix}`
+		const queryString = `https://online-chat-app-ellipsoul.herokuapp.com/api/clear_old_messages?time=${dateUnix}`
 
 		fetch(queryString, {
 			method:"DELETE",
-			mode:"cors",
+			mode: "cors",
 			headers: {"content_type":"application/json"}
 		})
 		.then(() => {console.log("Old messages deleted!")})
