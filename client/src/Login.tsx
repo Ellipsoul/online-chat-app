@@ -81,7 +81,7 @@ export default function Login():ReactElement {
 						Welcome!
 					</div>
 					<div id="info"> 
-						This is a very simple chat site where you can connect with a unique name and chat with all other connect users! Made with: 
+						This is a simple chat site where you can connect with your name and chat with all connected users! Made with: 
 					</div>
 
 					{/* Tech links */}
@@ -89,42 +89,42 @@ export default function Login():ReactElement {
 						{/* GitHub */}
 						<div>
 							<a href="https://github.com/Ellipsoul" target="_blank">
-								<img src="/images/github_logo.png" className="logo"></img>
+								<img src="/online-chat-app/images/github_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* React */}
 						<div>
 							<a href="https://reactjs.org/" target="_blank">
-								<img src="/images/react_logo.png" className="logo"></img>
+								<img src="/online-chat-app/images/react_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* Typescript */}
 						<div>
 							<a href="https://www.typescriptlang.org/" target="_blank">
-								<img src="images/typescript_logo.png" className="logo"></img>
+								<img src="/online-chat-app/images/typescript_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* Python */}
 						<div>
 							<a href="https://www.python.org/" target="_blank">
-								<img src="/images/python_logo.png" className="logo"></img>
+								<img src="/online-chat-app/images/python_logo.png" className="logo"></img>
 							</a>
 						</div>
 
 						{/* Flask */}
 						<div>
 							<a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">
-								<img src="/images/flask_logo.png" className="logo"></img>
+								<img src="/online-chat-app/images/flask_logo.png" className="logo"></img>
 							</a>
 						</div>
 
-						{/* Typescript */}
+						{/* Heroku */}
 						<div>
-							<a href="https://aws.amazon.com/" target="_blank">
-								<img src="/images/aws_logo.png" className="logo"></img>
+							<a href="https://www.heroku.com/" target="_blank">
+								<img src="/online-chat-app/images/heroku_logo.png" className="logo"></img>
 							</a>
 						</div>
 					</div>

@@ -193,7 +193,7 @@ export default function Chat(props: chatProps) {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			retrieve_new_messages();
-		}, 5000)
+		}, 3000)
 		return () => clearInterval(interval);
 	}, []);
 
