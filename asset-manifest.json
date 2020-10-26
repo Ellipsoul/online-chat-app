@@ -1,25 +1,22 @@
 {
   "files": {
     "main.css": "/online-chat-app/static/css/main.ae5e1f12.chunk.css",
-    "main.js": "/online-chat-app/static/js/main.d6bad995.chunk.js",
-    "main.js.map": "/online-chat-app/static/js/main.d6bad995.chunk.js.map",
-    "runtime-main.js": "/online-chat-app/static/js/runtime-main.ea8cc71c.js",
-    "runtime-main.js.map": "/online-chat-app/static/js/runtime-main.ea8cc71c.js.map",
-    "static/js/2.9cd59c48.chunk.js": "/online-chat-app/static/js/2.9cd59c48.chunk.js",
-    "static/js/2.9cd59c48.chunk.js.map": "/online-chat-app/static/js/2.9cd59c48.chunk.js.map",
-    "static/js/3.ca0c17dd.chunk.js": "/online-chat-app/static/js/3.ca0c17dd.chunk.js",
-    "static/js/3.ca0c17dd.chunk.js.map": "/online-chat-app/static/js/3.ca0c17dd.chunk.js.map",
+    "main.js": "/online-chat-app/static/js/main.5642fdd6.chunk.js",
+    "main.js.map": "/online-chat-app/static/js/main.5642fdd6.chunk.js.map",
+    "runtime-main.js": "/online-chat-app/static/js/runtime-main.ecd1c244.js",
+    "runtime-main.js.map": "/online-chat-app/static/js/runtime-main.ecd1c244.js.map",
+    "static/js/2.61c716f9.chunk.js": "/online-chat-app/static/js/2.61c716f9.chunk.js",
+    "static/js/2.61c716f9.chunk.js.map": "/online-chat-app/static/js/2.61c716f9.chunk.js.map",
     "index.html": "/online-chat-app/index.html",
-    "precache-manifest.6435c8928954aea7426338aaaff4e976.js": "/online-chat-app/precache-manifest.6435c8928954aea7426338aaaff4e976.js",
+    "precache-manifest.c9056c98b4d77e26f646b0d4f1ec0f17.js": "/online-chat-app/precache-manifest.c9056c98b4d77e26f646b0d4f1ec0f17.js",
     "service-worker.js": "/online-chat-app/service-worker.js",
     "static/css/main.ae5e1f12.chunk.css.map": "/online-chat-app/static/css/main.ae5e1f12.chunk.css.map",
-    "static/js/2.9cd59c48.chunk.js.LICENSE.txt": "/online-chat-app/static/js/2.9cd59c48.chunk.js.LICENSE.txt",
-    "static/js/3.ca0c17dd.chunk.js.LICENSE.txt": "/online-chat-app/static/js/3.ca0c17dd.chunk.js.LICENSE.txt"
+    "static/js/2.61c716f9.chunk.js.LICENSE.txt": "/online-chat-app/static/js/2.61c716f9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.ea8cc71c.js",
-    "static/js/2.9cd59c48.chunk.js",
+    "static/js/runtime-main.ecd1c244.js",
+    "static/js/2.61c716f9.chunk.js",
     "static/css/main.ae5e1f12.chunk.css",
-    "static/js/main.d6bad995.chunk.js"
+    "static/js/main.5642fdd6.chunk.js"
   ]
 }
