@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "private": true,
   "homepage": "https://ellipsoul.github.io/online-chat-app",
   "dependencies": {
@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
+    "@types/npm": "^2.0.31",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.5",
@@ -30,7 +31,9 @@
     "react-sliding-pane": "^6.1.2",
     "save-dev": "0.0.1-security",
     "socket.io-client": "^2.3.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uifx": "^2.0.7",
+    "use-sound": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

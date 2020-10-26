@@ -4,6 +4,7 @@ import './App.css';
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Message from "./Message";
+import { FaSignOutAlt } from 'react-icons/fa';
 
 export interface chatProps {}  // No props being used right now
 
@@ -283,6 +284,10 @@ export default function Chat(props: chatProps) {
 				<button onClick={retrieve_all_messages}>RA</button>
 				<button onClick={retrieve_new_messages}>RN</button>
 			</div>: null}
+
+			<Button className="return_button" color="secondary" href="https://ellipsoul.github.io/online-chat-app/">
+				<FaSignOutAlt />
+			</Button>
 
 		</>
 	)

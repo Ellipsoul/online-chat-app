@@ -249,6 +249,15 @@
 	height: auto;
 }
 
+.return_button {
+	position: absolute !important;
+	top: 0% !important;
+	left: 0% !important;
+	border-radius: 50% !important;
+	height: 4em !important;
+	width: 4em !important;
+}
+
 /* -------------------------------------------------------------------------------------------------------------- */
 
 /* Message component styling */
